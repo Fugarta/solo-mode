@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solo Mode</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <meta property="og:title" content="Solo Mode" />
+  <meta property="og:description" content="遊戯王の一人回しが出来る web サイトです。" />
+  <meta property="og:image" content="https://fugarta.github.io/solo-mode/images/ogp.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fugarta.github.io/solo-mode/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://fugarta.github.io/solo-mode/images/ogp.png" />
+
+
+</head>
+<body>
+  <div id="mainContainer">
+    <h1 class="title">Solo Mode</h1>
+    
+    <!-- main-content: custom-layout と side-slot を横並びに -->
+    <div class="main-content">
+      <div class="custom-layout">
+        <!-- 最上段: 2個（中央の3番目と5番目の上）-->
+        <div class="row row-top">
+          <div class="custom-slot" data-slot="1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+        <!-- 2段目: 6個 -->
+        <div class="row row-middle">
+          <div class="custom-slot" data-slot="3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="7" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="8" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+        <!-- 最下段: 5個（中央の1つ分右にずらす）-->
+        <div class="row row-bottom">
+          <div class="custom-slot" data-slot="9" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="10" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="11" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="12" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div class="custom-slot" data-slot="13" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+      </div>
+      <!-- 右側の縦長長方形 -->
+      <div class="side-slots-container">
+        <div class="side-slot-group">
+          <div class="side-slot-label">墓地</div>
+          <div class="side-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+        <div class="side-slot-group">
+          <div class="side-slot-label">除外</div>
+          <div class="side-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+      </div>
+    </div>
+    <!-- 中央の横長長方形 -->
+    <div class="center-row">
+      <div class="center-group">
+        <div class="center-slot-label">手札</div>
+        <div class="center-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="imagePool" class="pool" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="pool-label">デッキ</div>
+    <div class="tier-row" id="poolRow"></div>
+  </div>
+
+  <div class="controls">
+    <input type="file" id="imageUpload" accept="image/*" multiple />
+    <button id="saveButton">Tier表を保存</button>
+    <button id="tweetButton">Twitterに投稿</button>
+    <p>画像をペースト（Ctrl+V）またはアップロードで追加できます</p>
+  </div>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
