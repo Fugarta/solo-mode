@@ -82,22 +82,124 @@ function createImageElement(src,) {
   return wrapper;
 }
 
-function addImageToPool(src, toFirst = false) {
+function addImageToPool(src, toFirst = false, isEx = false) {
   const wrapper = createImageElement(src);
-  if (toFirst && poolRow.firstChild) {
-    poolRow.insertBefore(wrapper, poolRow.firstChild);
-  } else {
-    poolRow.appendChild(wrapper);
+  if (!isEx) {
+    if (toFirst && poolRow.firstChild) {
+      poolRow.insertBefore(wrapper, poolRow.firstChild);
+    } else {
+      poolRow.appendChild(wrapper);
+    }
+  }
+  else {
+    if (toFirst && poolRow2.firstChild) {
+      poolRow2.insertBefore(wrapper, poolRow2.firstChild);
+    } else {
+      poolRow2.appendChild(wrapper);
+    }
+
   }
 }
 
 // 画像アップロード時
 document.getElementById("imageUpload").addEventListener("change", (event) => {
   const files = event.target.files;
+
+  if (files.length > 1) {
+    for (const file of files) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        addImageToPool(e.target.result, false);
+      };
+      reader.readAsDataURL(file);
+    }
+    return;
+  }
+
   for (const file of files) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      addImageToPool(e.target.result, true); // 先頭に追加
+      const img = new Image();
+      img.onload = function() {
+        const w = img.width;
+        const h = img.height;
+        const cols = 10;
+        const rows = 4;
+
+        // 切り出し範囲
+        var startX = 0;
+        var startY = null;
+        const cardWidth = w /cols
+        var cardHeight = null;
+        var startYEx = null;
+        if (w >= 1000 && w <= 1300 && h >= 1000 && h <= 1300) {
+          startX = 0;
+          startY = 117 / 1187 * h;
+          cardHeight = 155 / 1187 * h;        
+          startYEx = 780 / 1187 * h;
+        }else if (w >= 600 && w <= 700 && h >= 600 && h <= 700) {
+          startX = 0;
+          startY = 67 / 680 * h;
+          cardHeight = 89 / 680 * h;
+          startYEx = 448 / 680 * h;
+        }else{
+          // 画像サイズが不正な場合は何もしない
+          alert("画像サイズが不正です。");
+        }
+
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const canvas = document.createElement("canvas");
+            canvas.width = cardWidth;
+            canvas.height = cardHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(
+              img,
+              startX + col * cardWidth,
+              startY + row * cardHeight,
+              cardWidth,
+              cardHeight,
+              0,
+              0,
+              cardWidth,
+              cardHeight
+            );
+            const dataUrl = canvas.toDataURL();
+            addImageToPool(dataUrl, false); // 先頭に追加
+          }
+        }
+        for (let i = 0; i < 10; i++) {
+          const canvas = document.createElement("canvas");
+          canvas.width = cardWidth;
+          canvas.height = cardHeight;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(
+            img,
+            0 + i * cardWidth, startYEx, // sx, sy
+            cardWidth, cardHeight,  // sw, sh
+            0, 0,                   // dx, dy
+            cardWidth, cardHeight   // dw, dh
+          );
+          const dataUrl = canvas.toDataURL();
+          addImageToPool(dataUrl, false, true);
+        }
+        for (let i = 0; i < 5; i++) {
+          const canvas = document.createElement("canvas");
+          canvas.width = cardWidth;
+          canvas.height = cardHeight;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(
+            img,
+            0 + i * cardWidth, startYEx + cardHeight, // sx, sy
+            cardWidth, cardHeight,  // sw, sh
+            0, 0,                   // dx, dy
+            cardWidth, cardHeight   // dw, dh
+          );
+          const dataUrl = canvas.toDataURL();
+          addImageToPool(dataUrl, false, true);
+        }
+      };
+      img.src = e.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -121,20 +223,20 @@ document.addEventListener("paste", (event) => {
 // 初期化時はそのまま末尾に追加
 window.addEventListener("DOMContentLoaded", () => {
   const initialImages = [
-    { src: "images/deaberu.png", label: "deaberu" },
-    { src: "images/diesuire.png", label: "diesuire" },
-    { src: "images/excel.png", label: "excel" },
-    { src: "images/hakaana.png", label: "hakaana" },
-    { src: "images/huranbe.png", label: "huranbe" },
-    { src: "images/masukare.png", label: "masukare" },
-    { src: "images/ork.png", label: "ork" },
-    { src: "images/popu.png", label: "popu" },
-    { src: "images/rinkuri.png", label: "rinkuri" },
-    { src: "images/sekuen.png", label: "sekuen" },
-    { src: "images/siru.png", label: "siru" },
-    { src: "images/toga.png", label: "toga" },
-    { src: "images/urara.png", label: "urara" },
-    { src: "images/usa.png", label: "usa" },
+    // { src: "images/deaberu.png", label: "deaberu" },
+    // { src: "images/diesuire.png", label: "diesuire" },
+    // { src: "images/excel.png", label: "excel" },
+    // { src: "images/hakaana.png", label: "hakaana" },
+    // { src: "images/huranbe.png", label: "huranbe" },
+    // { src: "images/masukare.png", label: "masukare" },
+    // { src: "images/ork.png", label: "ork" },
+    // { src: "images/popu.png", label: "popu" },
+    // { src: "images/rinkuri.png", label: "rinkuri" },
+    // { src: "images/sekuen.png", label: "sekuen" },
+    // { src: "images/siru.png", label: "siru" },
+    // { src: "images/toga.png", label: "toga" },
+    // { src: "images/urara.png", label: "urara" },
+    // { src: "images/usa.png", label: "usa" },
   ];
   
   // 初期画像のsrcを絶対パスで保持

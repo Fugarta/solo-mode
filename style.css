@@ -13,7 +13,7 @@ body {
 
 .controls {
   margin-top: 30px;
-  text-align: center;
+  text-align: left; /* 左詰めに変更 */
   background: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(100, 100, 100, 0.07);
@@ -145,14 +145,15 @@ body {
   padding-bottom: 5px;
 }
 
-#poolRow .tier-item-wrapper {
-  width: 120px;
-  height: 120px;
-  min-width: 120px;
-  min-height: 120px;
-  max-width: 120px;
-  max-height: 120px;
-  flex: 0 0 120px;
+#poolRow2 {
+  max-height: 140px;
+  min-height: 140px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding-bottom: 5px;
 }
 
 .touch-dragging {
@@ -174,11 +175,12 @@ body {
 
 /* 新たに main-content を追加 */
 .main-content {
-  /* width: 1032px + var(--slot-width) * 2;               */
+  /* width: 1032px + var(--slot-width) * 2; */
   margin: 0 auto;             /* ページ中央へ */
   display: flex;
   gap: 18px;
   align-items: stretch;       /* 子要素の高さを揃える */
+  justify-content: center;    /* 中央揃いを追加 */
 }
 
 /* 最上段: 2個（中央の3番目と5番目の上） */
@@ -260,19 +262,21 @@ body {
 /* 横長長方形 */
 .center-row {
   display: flex;
-  justify-content: flex-start; /* 左詰めに変更 */
+  justify-content: flex-start;
   margin: 32px 0 32px 0;
+  /* data-slot="9" の custom-slot の左端に合わせる */
+  margin-left: calc(var(--slot-width) * 2 + var(--gap) * 2);
 }
 
 /* 横長長方形（center-slot）の内部を左詰めに横並びに配置 */
 .center-slot {
   display: flex;                
   flex-direction: row;          /* 横並び */
-  justify-content: flex-start;  /* 左詰め */
+  justify-content: center;  /* 左詰め */
   align-items: flex-start;      /* 上揃え */
   gap: 12px;
   /* 既存のプロパティはそのまま */
-  width: calc(var(--slot-width) * 6); /* slot-width の 2倍 */
+  width: calc(var(--slot-width) * 5.5); /* slot-width の 6倍 */
   height: 144px;
   background: #fff;
   border: 2.5px solid #bdbdbd;
@@ -285,7 +289,6 @@ body {
   overflow-y: hidden;
   position: relative;
   transition: box-shadow 0.2s, border-color 0.2s;
-  margin-left: calc(var(--slot-width)); /* 左側の隙間を確保 */
 }
 
 .center-slot:hover {
@@ -315,6 +318,21 @@ body {
 #poolRow .tier-item-wrapper:first-child {
   margin-left: 0;
 }
+
+#poolRow2 .tier-item-wrapper {
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+  min-height: 120px;
+  max-width: 120px;
+  max-height: 120px;
+  flex: 0 0 120px;
+  margin-left: calc(var(--slot-width)*-0.4);   /* 120px の 80% 分重なり */
+}
+#poolRow2 .tier-item-wrapper:first-child {
+  margin-left: 0;
+}
+
 /* 右側の縦長長方形 */
 .side-slot {
   width: calc(var(--slot-width) * 1.2); /* slot-width の 1.5倍 */
@@ -368,8 +386,24 @@ body {
 }
 
 .center-slot-label {
-  margin-left: calc(var(--slot-width)); /* 左側の隙間を確保 */
   font-size: 1.2rem;
   font-weight: bold;
   padding-left: calc(var(--slot-width)*0.1); /* 必要に応じて調整 */
+}
+
+/* 説明文ボックス */
+.explain-box {
+  margin-top: 30px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 32px;
+  padding: 18px 20px;
+  background: #fffbe7;
+  border: 2px solid #e0c97f;
+  border-radius: 10px;
+  min-width: 260px;
+  max-width: 400px;
+  font-size: 1rem;
+  color: #665200;
+  box-shadow: 0 2px 8px rgba(200, 180, 100, 0.08);
 }
