@@ -20,7 +20,7 @@
 </head>
 <body>
   <div id="mainContainer">
-    <h1 class="title">Solo Mode</h1>
+    <h1 class="title" contenteditable="true" spellcheck="false">Solo Mode</h1>
     
     <!-- main-content: custom-layout と side-slot を横並びに -->
     <div class="main-content">
@@ -81,7 +81,7 @@
     <div class="tier-row" id="poolRow2"></div>
   </div>
 
-  <div style="display: flex; justify-content: center; align-items: flex-start; gap: 0;">
+  <div class="controls-explain-container">
     <div class="controls">
       <input type="file" id="imageUpload" accept="image/*" multiple />
       <button id="saveButton">Tier表を保存</button>
@@ -93,8 +93,9 @@
       <p>複数枚の画像のアップロード、またはクリップボードから貼り付ける際は、一枚のカード画像として扱います。</p>
     </div>
     <div class="explain-box">
-      <!-- ここに説明文を記載してください -->
+      <p>操作説明<br />
       除外ゾーンが不要な場合は、ダブルクリックすることで非表示にできます。<br />
+      </p>
     </div>
   </div>
 

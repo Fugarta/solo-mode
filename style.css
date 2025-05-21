@@ -2,6 +2,8 @@ body {
   font-family: sans-serif;
   margin: 20px;
   background: #f2f2f2;
+  font-size: 1rem;
+  overflow-x: auto;
 }
 
 .title {
@@ -54,17 +56,37 @@ body {
   transform: translateY(1px) scale(0.98);
 }
 
-/* 画像サイズ: 120x120 → 長方形: 132x144 */
+/* デフォルト値 */
 :root {
-  --slot-width: 140px;
+  --slot-width: 140px; /* スロットの幅 */
   --slot-height: 194px;
-  --gap:18px;
+  --gap: 18px;
+  --min-display-width: calc(var(--slot-width) * 9.8); /* 最小幅 */
+}
+
+/* 画面幅が700px以下の場合は小さくする */
+@media (max-width: 1000px) {
+  :root {
+    --slot-width: 10vw;  
+    --slot-height: calc(var(--slot-width) * 1.385); /* 元比率維持 */
+    --gap: calc(var(--slot-width) * 0.1);
+  }
+}
+
+/* 画面幅が500px以下の場合はさらに小さく */
+@media (max-width: 500px) {
+  :root {
+    --slot-width: 15vw;
+    --slot-height: calc(var(--slot-width) * 1.385);
+    --gap: calc(var(--slot-width) * 0.1);
+    --min-display-width: 600px; /* 最小幅 */
+  }
 }
 
 .tier-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--gap);
 }
 
 .tier {
@@ -87,9 +109,9 @@ body {
 .tier-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--gap);
   flex: 1;
-  min-height: 120px;
+  min-height: var(--slot-height);
   align-items: flex-start;
 }
 
@@ -132,27 +154,28 @@ body {
   padding: 10px;
   background: #e3e3e3;
   border: 2px dashed #aaa;
+  min-width: var(--min-display-width);
 }
 
 #poolRow {
-  max-height: 140px;
-  min-height: 140px;
+  max-height: var(--slot-width);
+  min-height: var(--slot-height);
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
   flex-wrap: nowrap;
-  gap: 10px;
+  gap: var(--gap);
   padding-bottom: 5px;
 }
 
 #poolRow2 {
-  max-height: 140px;
-  min-height: 140px;
+  max-height: var(--slot-width);
+  min-height: var(--slot-height);
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
   flex-wrap: nowrap;
-  gap: 10px;
+  gap: var(--gap);
   padding-bottom: 5px;
 }
 
@@ -169,7 +192,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: var(--gap);
   /* （margin-bottom, margin auto などは既に設定済み） */
 }
 
@@ -178,17 +201,17 @@ body {
   /* width: 1032px + var(--slot-width) * 2; */
   margin: 0 auto;             /* ページ中央へ */
   display: flex;
-  gap: 18px;
+  gap: var(--gap);
   align-items: stretch;       /* 子要素の高さを揃える */
   justify-content: center;    /* 中央揃いを追加 */
 }
 
 /* 最上段: 2個（中央の3番目と5番目の上） */
 .row-top {
-  width: 100%;
+  /* width: 100%; */
   display: grid;
   grid-template-columns: repeat(6, var(--slot-width));
-  gap: 18px;
+  gap: var(--gap);
   margin-bottom: 0;
   /* 左揃えに変更 */
   justify-items: start;
@@ -202,21 +225,21 @@ body {
 
 /* 中央段: 6個 */
 .row-middle {
-  width: 100%;
+  /* width: 100%; */
   display: grid;
   grid-template-columns: repeat(6, var(--slot-width));
   /* 左揃えに変更 */
   justify-content: start;
-  gap: 18px;
+  gap: var(--gap);
   margin-bottom: 0;
 }
 
 /* 最下段: 5個（中央の1つ分右にずらす） */
 .row-bottom {
-  width: 100%;
+  /* width: 100%; */
   display: grid;
   grid-template-columns: repeat(6, var(--slot-width));
-  gap: 18px;
+  gap: var(--gap);
   margin-bottom: 0;
   /* 左揃えに変更 */
   justify-items: start;
@@ -262,29 +285,25 @@ body {
 /* 横長長方形 */
 .center-row {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   margin: 32px 0 32px 0;
-  /* data-slot="9" の custom-slot の左端に合わせる */
-  margin-left: calc(var(--slot-width) * 2 + var(--gap) * 2);
 }
 
 /* 横長長方形（center-slot）の内部を左詰めに横並びに配置 */
 .center-slot {
   display: flex;                
   flex-direction: row;          /* 横並び */
-  justify-content: center;  /* 左詰め */
+  justify-content: start;  /* 左詰め */
   align-items: flex-start;      /* 上揃え */
   gap: 12px;
   /* 既存のプロパティはそのまま */
   width: calc(var(--slot-width) * 5.5); /* slot-width の 6倍 */
-  height: 144px;
+  height: calc(var(--slot-height) * 1.1);
   background: #fff;
   border: 2.5px solid #bdbdbd;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
   min-width: 400px;
-  min-height: 144px;
-  max-height: 144px;
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
@@ -298,7 +317,7 @@ body {
 
 /* center-slot 内の画像（横並び・重なり） */
 .center-slot .tier-item-wrapper {
-  margin-left: calc(var(--slot-width)*-0.6);   /* 120px の 80% 分重なり */
+  margin-left: calc(var(--slot-width)*-0.7);   /* 120px の 80% 分重なり */
 }
 .center-slot .tier-item-wrapper:first-child {
   margin-left: 0;
@@ -306,28 +325,20 @@ body {
 
 /* プール内の画像は従来通り */
 #poolRow .tier-item-wrapper {
-  width: 120px;
-  height: 120px;
-  min-width: 120px;
-  min-height: 120px;
-  max-width: 120px;
-  max-height: 120px;
-  flex: 0 0 120px;
-  margin-left: calc(var(--slot-width)*-0.4);   /* 120px の 80% 分重なり */
+  width: var(--slot-width);
+  height: var(--slot-height);
+  flex: 0 0 var(--slot-width);
+  margin-left: calc(var(--slot-width)*-0.7);   /* 120px の 80% 分重なり */
 }
 #poolRow .tier-item-wrapper:first-child {
   margin-left: 0;
 }
 
 #poolRow2 .tier-item-wrapper {
-  width: 120px;
-  height: 120px;
-  min-width: 120px;
-  min-height: 120px;
-  max-width: 120px;
-  max-height: 120px;
-  flex: 0 0 120px;
-  margin-left: calc(var(--slot-width)*-0.4);   /* 120px の 80% 分重なり */
+  width: var(--slot-width);
+  height: var(--slot-height);
+  flex: 0 0 var(--slot-width);
+  margin-left: calc(var(--slot-width)*-0.7);   /* 120px の 80% 分重なり */
 }
 #poolRow2 .tier-item-wrapper:first-child {
   margin-left: 0;
@@ -345,7 +356,7 @@ body {
   flex-direction: column;       /* 縦並び */
   justify-content: flex-start;  /* 上詰め */
   align-items: center;          /* 横方向は中央揃え（必要に応じて調整） */
-  gap: 10px;                    /* 要素間の隙間 */
+  gap: var(--gap);
   overflow: hidden;
   position: relative;
   align-self: stretch; /* 高さを親(main-content)の高さに合わせる（row-top～row-bottom の高さと一致） */
@@ -362,7 +373,7 @@ body {
 .side-slots-container {
   display: flex;
   flex-direction: row;
-  gap: 18px;
+  gap: var(--gap);
 }
 
 .side-slot-group {
@@ -393,17 +404,114 @@ body {
 
 /* 説明文ボックス */
 .explain-box {
-  margin-top: 30px;
   display: inline-block;
   vertical-align: top;
-  margin-left: 32px;
-  padding: 18px 20px;
+  padding: 10px 10px 10px 10px;
   background: #fffbe7;
   border: 2px solid #e0c97f;
   border-radius: 10px;
-  min-width: 260px;
-  max-width: 400px;
   font-size: 1rem;
   color: #665200;
   box-shadow: 0 2px 8px rgba(200, 180, 100, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* controls と explain-box を横並び・レスポンシブ対応 */
+.controls-explain-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--gap);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* controls, explain-box の幅を可変に */
+.controls,
+.explain-box {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: var(--min-display-width); /* 最小幅を600pxに設定 */
+}
+
+/* 画面幅が900px以下で縦並びに */
+@media (max-width: 900px) {
+  .controls-explain-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap);
+  }
+  .controls,
+  .explain-box {
+    width: 100%;
+  }
+}
+
+/* デフォルトのフォントサイズ */
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  background: #f2f2f2;
+  font-size: 1rem;
+}
+
+/* タイトルやラベルなども可変に */
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.center-slot-label,
+.side-slot-label,
+.slot-label-center {
+  font-size: 1.2rem;
+}
+
+/* 画面幅が900px以下でフォントサイズ縮小 */
+@media (max-width: 900px) {
+  body {
+    font-size: 0.95rem;
+  }
+  .title {
+    font-size: 2rem;
+  }
+  .center-slot-label,
+  .side-slot-label,
+  .slot-label-center {
+    font-size: 1rem;
+  }
+}
+
+/* 画面幅が600px以下でさらに縮小 */
+@media (max-width: 600px) {
+  body {
+    font-size: 0.85rem;
+  }
+  .title {
+    font-size: 1.3rem;
+  }
+  .center-slot-label,
+  .side-slot-label,
+  .slot-label-center {
+    font-size: 0.9rem;
+  }
+  .controls,
+  .explain-box {
+    font-size: 0.95rem;
+  }
+}
+
+/* 横スクロール許可 */
+#mainContainer {
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: var(--min-display-width); /* 最小幅を600pxに設定 */
+  /* padding-left: 1vw;
+  padding-right: 1vw; */
 }
