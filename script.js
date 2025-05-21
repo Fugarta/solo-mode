@@ -132,7 +132,7 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
         const cardWidth = w /cols
         var cardHeight = null;
         var startYEx = null;
-        if (w >= 1000 && w <= 1300 && h >= 1000 && h <= 1300) {
+        if (w >= 700 && w <= 1300 && h >= 700 && h <= 1300) {
           startX = 0;
           startY = 117 / 1187 * h;
           cardHeight = 155 / 1187 * h;        
