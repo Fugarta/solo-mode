@@ -20,28 +20,47 @@ function drop(ev) {
   const customSlot = ev.target.closest(".custom-slot");
   // 横長スロット
   const centerSlot = ev.target.closest(".center-slot");
-  // 右側の縦長長方形（新規追加）
+  // 右側の縦長長方形
   const sideSlot = ev.target.closest(".side-slot");
 
   if (!dragged) return;
 
   if (row) {
     let target = ev.target.closest(".tier-item-wrapper");
+    dragged.style = ""; // スタイルをリセット
     if (target && target !== dragged) {
       row.insertBefore(dragged, target);
     } else {
       row.appendChild(dragged);
     }
   } else if (customSlot) {
-    // すでに画像がある場合は何もしない
-    const existing = customSlot.querySelector(".tier-item-wrapper");
-    if (existing && existing !== dragged) {
-      return;
+    // すでに画像がある場合は少し下にずらして重ねる
+    const existingItems = customSlot.querySelectorAll(".tier-item-wrapper");
+
+    if (existingItems.length == 1) {
+      if (existingItems[0] === dragged) {
+        return; // ドロップ先が同じ場合は何もしない
+      }
     }
+
+    const baseZIndex = 1; // 基本の zIndex
+
+    existingItems.forEach((item, index) => {
+      item.style.position = "absolute";
+      item.style.zIndex = `${baseZIndex + index}`; // 枚数に応じて zIndex を調整
+    });
+
+    // ドロップされた画像を最前面に配置
+    dragged.style.position = "absolute";
+    dragged.style.top = "calc(var(--slot-width)*0."+existingItems.length+")"; // 一番上に配置
+    dragged.style.zIndex = `${baseZIndex + existingItems.length}`; // 最前面に配置
+
     customSlot.appendChild(dragged);
   } else if (centerSlot) {
+    dragged.style = ""; // スタイルをリセット
     centerSlot.appendChild(dragged);
   } else if (sideSlot) {
+    dragged.style = ""; // スタイルをリセット
     sideSlot.appendChild(dragged);
   }
 }
