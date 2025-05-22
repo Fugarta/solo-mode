@@ -58,9 +58,9 @@ body {
 
 /* デフォルト値 */
 :root {
-  --slot-width: 140px; /* スロットの幅 */
-  --slot-height: 194px;
-  --gap: 18px;
+  --slot-width: 120px; /* スロットの幅 */
+  --slot-height: calc(var(--slot-width) * 1.385);
+  --gap: 12px;
   --min-display-width: calc(var(--slot-width) * 9.8); /* 最小幅 */
 }
 
@@ -179,6 +179,15 @@ body {
   padding-bottom: 2px;
 }
 
+@media (min-width: 1000px) {
+  #poolRow {
+    min-height: calc(var(--slot-height) * 1.1);
+  }
+  #poolRow2 {
+    min-height: calc(var(--slot-height) * 1.1);
+  }
+}
+
 .touch-dragging {
   pointer-events: none;
   opacity: 0.6;
@@ -286,7 +295,7 @@ body {
 .center-row {
   display: flex;
   justify-content: center;
-  margin: 32px 0 32px 0;
+  margin: var(--gap) 0 var(--gap) 0;
 }
 
 /* 横長長方形（center-slot）の内部を左詰めに横並びに配置 */
