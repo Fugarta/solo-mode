@@ -143,35 +143,40 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
         const w = img.width;
         const h = img.height;
         const aspect = h / w;
-        let cols, rows, startX, startY, cardWidth, cardHeight, startYEx;
+        
+        // アスペクト比に応じて決定
+        let cols, rows, startX, startY, cardWidth, cardHeight, cardGap, startYEx;
 
         if (aspect >= 1.095 && aspect <= 1.105) {
           // パターン1
           cols = 10;
           rows = 4;
           startX = 0;
-          startY = 117 / 1187 * h;
-          cardWidth = w / cols;
-          cardHeight = 155 / 1187 * h;
-          startYEx = 780 / 1187 * h;
+          startY = 119 / 1187 * h;
+          cardWidth = 106 / 1080 * w;
+          cardHeight = 154 / 1187 * h;
+          cardGap = 2 / 1080 * w;
+          startYEx = 784 / 1187 * h;
         } else if (aspect >= 1.235 && aspect <= 1.245) {
           // パターン2
           cols = 10;
           rows = 5;
           startX = 0;
-          startY = 120 / 1341 * h;;
-          cardWidth = w / cols;
+          startY = 119 / 1341 * h;;
+          cardWidth = 106 / 1080 * w;
           cardHeight = 154 / 1341 * h;
-          startYEx = 936 / 1341 * h;
+          cardGap = 2 / 1080 * w;
+          startYEx = 938 / 1341 * h;
         } else if (aspect >= 1.380 && aspect <= 1.390) {
           // パターン3
           cols = 10;
           rows = 6;
           startX = 0;
-          startY = 120 / 1495 * h;;
-          cardWidth = w / cols;
+          startY = 119 / 1495 * h;;
+          cardWidth = 106 / 1080 * w;
           cardHeight = 154 / 1495 * h;
-          startYEx = 1092 / 1495 * h;
+          cardGap = 2 / 1080 * w;
+          startYEx = 1091 / 1495 * h;
         } else {
           // その他
           alert("画像のアスペクト比が不正です。(%d x %d)", w, h);
@@ -185,7 +190,7 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
             const ctx = canvas.getContext("2d");
             ctx.drawImage(
               img,
-              startX + col * cardWidth,
+              startX + col * (cardWidth + cardGap),
               startY + row * cardHeight,
               cardWidth,
               cardHeight,
@@ -205,7 +210,7 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
           const ctx = canvas.getContext("2d");
           ctx.drawImage(
             img,
-            0 + i * cardWidth, startYEx, // sx, sy
+            0 + i * (cardWidth + cardGap), startYEx, // sx, sy
             cardWidth, cardHeight,  // sw, sh
             0, 0,                   // dx, dy
             cardWidth, cardHeight   // dw, dh
@@ -220,7 +225,7 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
           const ctx = canvas.getContext("2d");
           ctx.drawImage(
             img,
-            0 + i * cardWidth, startYEx + cardHeight, // sx, sy
+            0 + i * (cardWidth + cardGap), startYEx + cardHeight, // sx, sy
             cardWidth, cardHeight,  // sw, sh
             0, 0,                   // dx, dy
             cardWidth, cardHeight   // dw, dh
