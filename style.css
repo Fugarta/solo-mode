@@ -253,21 +253,6 @@ body {
   /* 左揃えに変更 */
   justify-items: start;
 }
-.row-bottom .custom-slot:nth-child(1) {
-  grid-column: 2; /* 1つ分右にずらす */
-}
-.row-bottom .custom-slot:nth-child(2) {
-  grid-column: 3;
-}
-.row-bottom .custom-slot:nth-child(3) {
-  grid-column: 4;
-}
-.row-bottom .custom-slot:nth-child(4) {
-  grid-column: 5;
-}
-.row-bottom .custom-slot:nth-child(5) {
-  grid-column: 6;
-}
 
 .custom-slot {
   background: #fff;
@@ -625,3 +610,7 @@ body {
   fill: currentColor;
 }
 
+/* data-slot="9" の要素に点線の枠線を適用 */
+.custom-slot[data-slot="9"] {
+  border: 2px dashed #ccc; /* 点線の枠線 */
+}
