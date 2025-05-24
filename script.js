@@ -191,7 +191,8 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
           startYEx = 1091 / 1495 * h;
         } else {
           // その他
-          alert("画像のアスペクト比が不正です。(%d x %d)", w, h);
+          alert("画像のアスペクト比が不正です。("+ w + " x "+  h + ")");
+          return;
         }
 
         for (let row = 0; row < rows; row++) {

@@ -97,19 +97,33 @@
   <div class="controls-explain-container">
     <div class="controls">
       <input type="file" id="imageUpload" accept="image/*" multiple />
-      <button id="saveButton">Tier表を保存</button>
+      <button id="saveButton">盤面の画像を保存</button>
       <button id="tweetButton">Twitterに投稿</button>
       <p>遊戯王ニューロンから取得したデッキ画像をアップロードすることで、含まれるカードを全て登録することができます。<br />
          ・注意1 メインデッキ 40枚以上、EXデッキ 10枚以上、サイドデッキなしの画像にのみ対応しています。<br />
          ・注意2 ニューロンから twitter または discord に投稿した画像を保存してアップロードしてください。<br />
          ・注意3 twitter 経由の画像は解像度が低いため、discord 経由の画像を推奨します。</p>
-      <p>複数枚の画像のアップロード、またはクリップボードから貼り付ける際は、一枚のカード画像として扱います。</p>
+      <p>複数枚の画像のアップロード、またはクリップボードから貼り付けると、一枚のカード画像として登録することができます。</p>
     </div>
     <div class="explain-box">
       <p>操作説明<br />
-      除外ゾーンが不要な場合は、ダブルクリックすることで非表示にできます。<br />
+        ・デッキ / EX デッキの画像をドラッグし、好きな場所にドロップすることで、その場所に配置できます。<br />
+        ・すでにカードがある場所にカードをドロップすると、重ねて表示することができます。<br />
+        　・エクシーズ素材としてご扱いください。<br />
+        ・カウンターをドラッグし、カード画像にドロップすると付けることができます。<br />
+        　・ウーサの素材数や変動したレベル、魔力カウンターとしてご扱いください。<br />
+        ・カウンターの上下ボタンを押すことで、カウンターの数を増減できます。<br />
+        　・カウンターの数が負になる時、カウンターは消滅します。<br />
+        ・除外ゾーンが不要な場合は、ダブルクリックすることで非表示にできます。<br />
       </p>
     </div>
+  <a href="https://twitter.com/FugaPoke" target="_blank" rel="noopener noreferrer" class="twitter-link">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.4.36a9.2 9.2 0 0 1-2.88 1.1A4.52 4.52 0 0 0 16.11 0C13.43 0 11.4 2.18 11.4 4.87c0 .38.04.75.12 1.1C7.6 5.8 4.1 3.88 1.67.92A4.84 4.84 0 0 0 1 3.15c0 1.65.87 3.1 2.2 3.95a4.52 4.52 0 0 1-2.05-.57v.06c0 2.3 1.63 4.2 3.8 4.63a4.52 4.52 0 0 1-2.04.08 4.51 4.51 0 0 0 4.22 3.16A9.05 9.05 0 0 1 0 19.54a12.8 12.8 0 0 0 6.92 2.03c8.3 0 12.84-7.14 12.84-13.34 0-.2 0-.39-.01-.58A9.4 9.4 0 0 0 23 3z"/>
+    </svg>
+    <span>Contact via Twitter @FugaPoke</span>
+  </a>
+
   </div>
 
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>

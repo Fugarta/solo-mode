@@ -373,7 +373,7 @@ body {
 
 /* side-slot 内の画像（縦並び・重なり） */
 .side-slot .tier-item-wrapper {
-  margin-top: calc(var(--slot-height)*-0.8);   /* 120px の 80% 分重なり */
+  margin-top: calc(var(--slot-height)*-0.9);   /* 120px の 80% 分重なり */
 }
 .side-slot .tier-item-wrapper:first-child {
   margin-top: 0;
@@ -609,5 +609,19 @@ body {
 
 .tier-item-wrapper .counter-container .triangle-button:hover {
   background: #aaa;
+}
+
+.twitter-link {
+  text-decoration: none;
+  color: #1DA1F2;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.twitter-link svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }
 
