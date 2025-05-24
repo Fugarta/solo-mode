@@ -62,6 +62,19 @@
     </div>
     <!-- 中央の横長長方形 -->
     <div class="center-row">
+      <!-- 左側に長方形を追加 -->
+      <div class="left-rectangle-container">
+        <div class="left-rectangle-label">カウンター</div>
+        <div class="left-rectangle">
+          <div class="counter-container" id="parent" draggable="true" ondragstart="drag(event)" >
+            <div class="triangle-button-container" >
+            <button class="triangle-button up">▲</button>
+            <button class="triangle-button down">▼</button>
+            </div>
+            <input type="text" class="counter-textbox" value="1" readonly />
+          </div>
+        </div>
+      </div>
       <div class="center-group">
         <div class="center-slot-label">手札</div>
         <div class="center-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>

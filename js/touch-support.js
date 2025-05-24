@@ -1,8 +1,31 @@
+import { initializeCounter } from "./counter-manager.js";
+
 export function enableTouchDrag(ev) {
+  // ドラッグ中の要素を元の位置に戻す関数
+  function dragEplogue(obj, isResetTop = true, isRestEventListener = true) {
+    obj.classList.remove('touch-dragging');
+    obj.style.left = '';
+    obj.style.position = '';
+    if (isResetTop) {
+      obj.style.top = '';
+    }
+    if (isRestEventListener) {
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    }
+  }
+
   ev.preventDefault();
 
-  const draggingElem = ev.target.closest('.tier-item-wrapper');
-  if (!draggingElem) return;
+  var isTierItem = true;
+  var draggingElem = ev.target.closest('.tier-item-wrapper');
+  if (!draggingElem) {
+    draggingElem = ev.target.closest('.counter-container');
+    if (!draggingElem) {
+      return;
+    }
+    isTierItem = false;
+  };
 
   /**
    * スマートフォンでのドラッグ移動時の挙動を設定
@@ -42,8 +65,21 @@ export function enableTouchDrag(ev) {
     // 右側の縦長長方形
     const sideSlot = dropElem?.closest(".side-slot");
 
-    var isEnableReset = true;
 
+    if (!isTierItem) {
+      let target = dropElem?.closest(".tier-item-wrapper");
+      if (target) {
+        const clonedCounter = draggingElem.cloneNode(true);
+        dragEplogue(clonedCounter, true, false); // 複製したカウンターのスタイルをリセット
+        initializeCounter(clonedCounter); // 複製したカウンターを初期化
+        clonedCounter.id = `clonedCounter-${Date.now()}`;
+        target.appendChild(clonedCounter);
+      }
+      dragEplogue(draggingElem);
+      return;
+    }
+
+    var isEnableReset = true;
     if (row) {
       let target = dropElem?.closest(".tier-item-wrapper");
       draggingElem.style = ""; // スタイルをリセット
@@ -60,12 +96,7 @@ export function enableTouchDrag(ev) {
       if (existingItems.length == 1) {
         if (existingItems[0] === draggingElem) {
           customSlot.appendChild(draggingElem);
-          draggingElem.classList.remove('touch-dragging');
-          draggingElem.style.left = '';
-          draggingElem.style.position = '';
-          draggingElem.style.top = '';
-          document.removeEventListener('touchmove', handleTouchMove);
-          document.removeEventListener('touchend', handleTouchEnd);
+          dragEplogue(draggingElem);
           return;
         }
       }
@@ -92,15 +123,7 @@ export function enableTouchDrag(ev) {
     }
 
     // ドラッグ中の要素を元の位置に戻す
-    draggingElem.classList.remove('touch-dragging');
-    draggingElem.style.left = '';
-    draggingElem.style.position = '';
-
-    if (isEnableReset) {
-      draggingElem.style.top = '';
-    }
-    document.removeEventListener('touchmove', handleTouchMove);
-    document.removeEventListener('touchend', handleTouchEnd);
+    dragEplogue(draggingElem, isEnableReset, true);
   };
 
   document.addEventListener('touchmove', handleTouchMove, { passive: false });

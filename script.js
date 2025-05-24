@@ -1,19 +1,24 @@
 import { enableTouchDrag } from "./js/touch-support.js";
+import { initializeCounter } from "./js/counter-manager.js";
+
+window.allowDrop = allowDrop;
+window.drop = drop;
+window.drag = drag;
 
 function allowDrop(ev) {
   ev.preventDefault();
 }
-window.allowDrop = allowDrop;
 
 function drag(ev) {
   ev.dataTransfer.setData("text/plain", ev.target.id);
+  console.log("drag", ev.target);
 }
 
 function drop(ev) {
   ev.preventDefault();
   const id = ev.dataTransfer.getData("text/plain");
   const dragged = document.getElementById(id)?.closest(".tier-item-wrapper");
-
+  const draggedCounter = document.getElementById(id)?.closest(".counter-container");
   // 画像プール
   const row = ev.target.closest(".tier-row");
   // カスタムスロット
@@ -22,8 +27,17 @@ function drop(ev) {
   const centerSlot = ev.target.closest(".center-slot");
   // 右側の縦長長方形
   const sideSlot = ev.target.closest(".side-slot");
+  const tierItem = ev.target.closest(".tier-item-wrapper");
 
-  if (!dragged) return;
+  if (draggedCounter) {
+    if (tierItem) {
+      const clonedCounter = draggedCounter.cloneNode(true);
+      initializeCounter(clonedCounter); // 複製したカウンターを初期化
+      clonedCounter.id = `clonedCounter-${Date.now()}`;
+      tierItem.appendChild(clonedCounter);
+      return;
+    }
+  }
 
   if (row) {
     let target = ev.target.closest(".tier-item-wrapper");
@@ -36,13 +50,11 @@ function drop(ev) {
   } else if (customSlot) {
     // すでに画像がある場合は少し下にずらして重ねる
     const existingItems = customSlot.querySelectorAll(".tier-item-wrapper");
-
     if (existingItems.length == 1) {
       if (existingItems[0] === dragged) {
         return; // ドロップ先が同じ場合は何もしない
       }
     }
-
     const baseZIndex = 1; // 基本の zIndex
 
     existingItems.forEach((item, index) => {
@@ -52,7 +64,7 @@ function drop(ev) {
 
     // ドロップされた画像を最前面に配置
     dragged.style.position = "absolute";
-    dragged.style.top = "calc(var(--slot-width)*0."+existingItems.length+")"; // 一番上に配置
+    dragged.style.top = "calc(var(--slot-width)*0." + existingItems.length + ")"; // 一番上に配置
     dragged.style.zIndex = `${baseZIndex + existingItems.length}`; // 最前面に配置
 
     customSlot.appendChild(dragged);
@@ -64,11 +76,11 @@ function drop(ev) {
     sideSlot.appendChild(dragged);
   }
 }
-window.drop = drop;
+
 
 let itemCount = 0;
 const poolRow = document.getElementById("poolRow");
-
+const poolRow2 = document.getElementById("poolRow2");
 // 初期画像のsrc一覧を保持
 let initialImageSrcs = [];
 
@@ -127,7 +139,7 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
   if (files.length > 1) {
     for (const file of files) {
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         addImageToPool(e.target.result, false);
       };
       reader.readAsDataURL(file);
@@ -139,11 +151,11 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
     const reader = new FileReader();
     reader.onload = function (e) {
       const img = new Image();
-      img.onload = function() {
+      img.onload = function () {
         const w = img.width;
         const h = img.height;
         const aspect = h / w;
-        
+
         // アスペクト比に応じて決定
         let cols, rows, startX, startY, cardWidth, cardHeight, cardGap, startYEx;
 
@@ -247,7 +259,7 @@ document.addEventListener("paste", (event) => {
     if (item.type.startsWith("image/")) {
       const blob = item.getAsFile();
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         addImageToPool(e.target.result, true); // 先頭に追加
       };
       reader.readAsDataURL(blob);
@@ -258,18 +270,18 @@ document.addEventListener("paste", (event) => {
 // 初期化時はそのまま末尾に追加
 window.addEventListener("DOMContentLoaded", () => {
   const initialImages = [
-    { src: "images/ura.jpg"},
-    { src: "images/ura.jpg"},
-    { src: "images/ura.jpg"},
+    { src: "images/ura.jpg" },
+    { src: "images/ura.jpg" },
+    { src: "images/ura.jpg" },
   ];
-  
+
   // 初期画像のsrcを絶対パスで保持
   initialImageSrcs = initialImages.map(obj => {
     const a = document.createElement('a');
     a.href = obj.src;
     return a.href;
   });
-  
+
   initialImages.forEach(obj => {
     addImageToPool(obj.src); // 末尾に追加
   });
@@ -300,7 +312,7 @@ document.getElementById("saveButton").addEventListener("click", () => {
 });
 
 document.getElementById("tweetButton").addEventListener("click", () => {
-  const tweetText = encodeURIComponent("Tier Makerで自分だけのティア表を作りました\nhttps://fugarta.github.io/tier-maker/");
+  const tweetText = encodeURIComponent("Solo Mode で盤面を作りました\nhttps://fugarta.github.io/solo-modeS/");
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     canvas.toBlob(blob => {
       const url = "https://twitter.com/intent/tweet?text=" + tweetText;
@@ -308,3 +320,10 @@ document.getElementById("tweetButton").addEventListener("click", () => {
     });
   });
 });
+
+
+// カウンターを含む要素を動的に作成する場合
+document.querySelectorAll(".counter-container").forEach((container) => {
+  initializeCounter(container);
+});
+document.querySelector(".counter-container").addEventListener("touchstart", enableTouchDrag, { passive: false });
