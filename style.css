@@ -24,6 +24,7 @@ body {
   border: 1.5px solid #d1d1d1;
 }
 
+#randomButton,
 .controls button,
 .controls input[type="file"] {
   background: linear-gradient(90deg, #bdbdbd 0%, #e0e0e0 100%);
@@ -41,6 +42,7 @@ body {
   vertical-align: middle;
 }
 
+#randomButton:hover,
 .controls button:hover,
 .controls input[type="file"]:hover {
   background: linear-gradient(90deg, #9e9e9e 0%, #cccccc 100%);
@@ -49,6 +51,7 @@ body {
   transform: translateY(-2px) scale(1.03);
 }
 
+#randomButton:active,
 .controls button:active,
 .controls input[type="file"]:active {
   background: linear-gradient(90deg, #757575 0%, #bdbdbd 100%);
@@ -56,6 +59,20 @@ body {
   transform: translateY(1px) scale(0.98);
 }
 
+#randomButton
+{
+  width: calc(var(--slot-width)*1.3);
+  height: 20%;
+  font-size: var(--mini-font-size);
+  line-height: 1;
+  padding: 0px 0px;
+}
+.randomButton-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-left: var(--gap);
+}
 /* デフォルト値 */
 :root {
   --slot-width: 120px; /* スロットの幅 */
@@ -88,7 +105,7 @@ body {
     --min-display-width: 600px; /* 最小幅 */
     --font-size: 0.9rem;
     --title-font-size: 1.3rem;
-    --mini-font-size: 0.8rem;
+    --mini-font-size: 0.7rem;
   }
 }
 
@@ -281,6 +298,7 @@ body {
   display: flex;
   justify-content: center;
   margin: var(--gap) 0 var(--gap) 0;
+  position: relative;
 }
 
 /* 横長長方形（center-slot）の内部を左詰めに横並びに配置 */
@@ -610,7 +628,7 @@ body {
   fill: currentColor;
 }
 
-/* data-slot="9" の要素に点線の枠線を適用 */
 .custom-slot[data-slot="9"] {
   border: 2px dashed #ccc; /* 点線の枠線 */
 }
+
