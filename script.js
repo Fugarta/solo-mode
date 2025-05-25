@@ -306,7 +306,7 @@ document.getElementById("saveButton").addEventListener("click", () => {
   // 非表示にした side-slot-group は保存画像に含まれません
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     const link = document.createElement("a");
-    link.download = "tier-list.png";
+    link.download = "solo-mode.png";
     link.href = canvas.toDataURL();
     link.click();
   });
