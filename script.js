@@ -308,8 +308,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById("saveButton").addEventListener("click", () => {
   const randomButtonContainer = document.querySelector(".randomButton-container");
-  // randomButton-container を一時的に非表示にする
+  const counterContainer = document.querySelector(".left-rectangle-container");
+
   randomButtonContainer.style.display = "none";
+  counterContainer.style.display = "none";
 
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     const link = document.createElement("a");
@@ -318,8 +320,8 @@ document.getElementById("saveButton").addEventListener("click", () => {
     link.click();
   });
   
-  // 保存後に randomButton-container を再表示
-  randomButtonContainer.style.display = "block";
+  randomButtonContainer.style.display = "flex";
+  counterContainer.style.display = "block";
 });
 
 document.getElementById("tweetButton").addEventListener("click", () => {

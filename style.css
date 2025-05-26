@@ -1,9 +1,12 @@
 body {
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
   margin: 20px;
   background: #f2f2f2;
-  font-size: var(--font-size);
   overflow-x: auto;
+  color: #333; /* Base text color */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* font-feature-settings: normal;
+  font-variation-settings: normal; */
 }
 
 .title {
@@ -11,6 +14,7 @@ body {
   font-size: var(--title-font-size);
   font-weight: bold;
   margin-bottom: 30px;
+  color: #111; /* Dark gray for titles */
 }
 
 .controls {
@@ -18,7 +22,6 @@ body {
   text-align: left; /* 左詰めに変更 */
   background: #f5f5f5;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(100, 100, 100, 0.07);
   padding: 20px 10px 10px 10px;
   display: inline-block;
   border: 1.5px solid #d1d1d1;
@@ -28,14 +31,12 @@ body {
 .controls button,
 .controls input[type="file"] {
   background: linear-gradient(90deg, #bdbdbd 0%, #e0e0e0 100%);
-  color: #222;
   border: 2px solid #b0b0b0;
   border-radius: 6px;
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: bold;
   margin: 0 5px 10px 5px;
-  box-shadow: 0 2px 6px rgba(120, 120, 120, 0.10);
   cursor: pointer;
   transition: background 0.2s, box-shadow 0.2s, transform 0.1s, border-color 0.2s;
   outline: none;
@@ -121,7 +122,6 @@ body {
   background: #f5f5f5;
   border: 2px solid #bdbdbd;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(100, 100, 100, 0.07);
   padding: 14px 14px 14px 0;
   margin-bottom: 8px;
   transition: box-shadow 0.2s, border-color 0.2s;
@@ -275,7 +275,6 @@ body {
   background: #fff;
   border: 2.5px solid #bdbdbd;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -314,12 +313,12 @@ body {
   background: #fff;
   border: 2.5px solid #bdbdbd;
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
   min-width: 400px;
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
   transition: box-shadow 0.2s, border-color 0.2s;
+  margin-left: var(--gap);
 }
 
 .center-slot:hover {
@@ -363,7 +362,6 @@ body {
   background: #fff;
   border: 2.5px solid #bdbdbd;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
   display: flex;
   flex-direction: column;       /* 縦並び */
   justify-content: flex-start;  /* 上詰め */
@@ -399,6 +397,7 @@ body {
   font-weight: bold;
   margin-bottom: 5px;
   text-align: center;
+  color: #333; 
 }
 
 .center-group {
@@ -412,6 +411,8 @@ body {
   font-size: var(--mini-font-size);
   font-weight: bold;
   padding-left: calc(var(--slot-width)*0.1); /* 必要に応じて調整 */
+  color: #333; 
+  margin-left: calc(var(--font-size)*1); /* 必要に応じて調整 */
 }
 
 /* 説明文ボックス */
@@ -424,7 +425,6 @@ body {
   border-radius: 10px;
   font-size: var(--font-size);
   color: #665200;
-  box-shadow: 0 2px 8px rgba(200, 180, 100, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -491,7 +491,7 @@ body {
   font-size: var(--mini-font-size);
   font-weight: bold;
   text-align: center;
-  color: #444;
+  color: #333;
 }
 
 /* 左側の長方形スタイル */
@@ -501,7 +501,6 @@ body {
   background: #fff;
   border: 2.5px solid #bdbdbd;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(120, 120, 120, 0.10);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -546,7 +545,8 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;  
+  user-select: none;
+  color: #333; /* テキストの色 */
 }
 
 /* ボタンのスタイル */
@@ -585,7 +585,6 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
 }
 
 /* counter-container 内のテキストボックスを小さく調整 */
@@ -630,5 +629,9 @@ body {
 
 .custom-slot[data-slot="9"] {
   border: 2px dashed #ccc; /* 点線の枠線 */
+}
+
+p, span, li {
+  color: #333; /* Regular text in a lighter gray */
 }
 
