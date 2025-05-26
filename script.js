@@ -307,25 +307,33 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("saveButton").addEventListener("click", () => {
-  const randomButtonContainer = document.querySelector(".randomButton-container");
+  const randomButtonContainer = document.querySelector("#randomButton");
   const counterContainer = document.querySelector(".left-rectangle-container");
 
   randomButtonContainer.style.display = "none";
   counterContainer.style.display = "none";
 
+  const titleElement = document.querySelector(".title");
+  const titleText = titleElement ? titleElement.textContent : "";
+  console.log("Title Text:", titleText);
+
+  // Replace spaces in titleText with hyphens
+  const formattedTitleText = titleText.replace(/\s/g, "-").replace(/　/g, "－");
+  console.log("Formatted Title Text:", formattedTitleText);
+
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     const link = document.createElement("a");
-    link.download = "solo-mode.png";
+    link.download = formattedTitleText + ".png";
     link.href = canvas.toDataURL();
     link.click();
   });
   
-  randomButtonContainer.style.display = "flex";
-  counterContainer.style.display = "block";
+  randomButtonContainer.style.display = "block";
+  counterContainer.style.display = "flex";
 });
 
 document.getElementById("tweetButton").addEventListener("click", () => {
-  const tweetText = encodeURIComponent("Solo Mode で盤面を作りました\nhttps://fugarta.github.io/solo-mode/");
+  const tweetText = encodeURIComponent("Solo Mode で盤面を作りました\n#壁とやるソロモード\nhttps://fugarta.github.io/solo-mode/");
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     canvas.toBlob(blob => {
       const url = "https://twitter.com/intent/tweet?text=" + tweetText;
