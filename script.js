@@ -84,7 +84,7 @@ const poolRow2 = document.getElementById("poolRow2");
 // 初期画像のsrc一覧を保持
 let initialImageSrcs = [];
 
-function createImageElement(src,) {
+function createImageElement(src) {
   const wrapper = document.createElement("div");
   wrapper.classList.add("tier-item-wrapper");
 
@@ -115,6 +115,7 @@ function createImageElement(src,) {
 
 function addImageToPool(src, toFirst = false, isEx = false) {
   const wrapper = createImageElement(src);
+  wrapper.id += " " + (isEx ? "ex" : "normal");
   if (!isEx) {
     if (toFirst && poolRow.firstChild) {
       poolRow.insertBefore(wrapper, poolRow.firstChild);
@@ -271,9 +272,9 @@ document.addEventListener("paste", (event) => {
 // 初期化時はそのまま末尾に追加
 window.addEventListener("DOMContentLoaded", () => {
   const initialImages = [
-    { src: "images/ura.jpg" },
-    { src: "images/ura.jpg" },
-    { src: "images/ura.jpg" },
+    { src: "images/blanck.png" },
+    { src: "images/blanck.png" },
+    { src: "images/blanck.png" },
   ];
 
   // 初期画像のsrcを絶対パスで保持
@@ -285,6 +286,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   initialImages.forEach(obj => {
     addImageToPool(obj.src); // 末尾に追加
+  });
+
+  poolRow.querySelectorAll(".tier-item-wrapper").forEach((item) => {
+    item.id = "initial";
   });
 
   // side-slot-group のうち2つめ（除外）のダブルクリックで表示/非表示を切替
@@ -302,18 +307,23 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("saveButton").addEventListener("click", () => {
-  // html2canvas は display:none の要素は描画しないため、
-  // 非表示にした side-slot-group は保存画像に含まれません
+  const randomButtonContainer = document.querySelector(".randomButton-container");
+  // randomButton-container を一時的に非表示にする
+  randomButtonContainer.style.display = "none";
+
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     const link = document.createElement("a");
     link.download = "solo-mode.png";
     link.href = canvas.toDataURL();
     link.click();
   });
+  
+  // 保存後に randomButton-container を再表示
+  randomButtonContainer.style.display = "block";
 });
 
 document.getElementById("tweetButton").addEventListener("click", () => {
-  const tweetText = encodeURIComponent("Solo Mode で盤面を作りました\nhttps://fugarta.github.io/solo-modeS/");
+  const tweetText = encodeURIComponent("Solo Mode で盤面を作りました\nhttps://fugarta.github.io/solo-mode/");
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     canvas.toBlob(blob => {
       const url = "https://twitter.com/intent/tweet?text=" + tweetText;
@@ -322,6 +332,49 @@ document.getElementById("tweetButton").addEventListener("click", () => {
   });
 });
 
+document.getElementById("randomButton").addEventListener("click", () => {
+  const poolRow = document.getElementById("poolRow");
+  const mainContent = document.querySelector(".main-content");
+  const centerSlot = document.querySelector(".center-slot");
+
+  // 全ての tier-item-wrapper を poolRow に戻す
+  const allItemsMain = mainContent.querySelectorAll(".tier-item-wrapper");
+  allItemsMain.forEach((item) => {
+    item.style = ""; // スタイルをリセット
+    if (item.id.includes("ex")) {
+      poolRow2.appendChild(item);
+    } else {
+      poolRow.appendChild(item);
+    }
+  });
+  const allItemsCenter = centerSlot.querySelectorAll(".tier-item-wrapper");
+  allItemsCenter.forEach((item) => {
+    item.style = ""; // スタイルをリセット
+    if (item.id.includes("ex")) {
+      poolRow2.appendChild(item);
+    } else {
+      poolRow.appendChild(item);
+    }
+  });
+
+  // poolRow 内の tier-item-wrapper をランダムで5枚選ぶ
+  const poolItems = Array.from(poolRow.querySelectorAll(".tier-item-wrapper"));
+  const selectedItems = [];
+  while (selectedItems.length < 5 && poolItems.length > 0) {
+    const randomIndex = Math.floor(Math.random() * poolItems.length);
+    const selectedItem = poolItems.splice(randomIndex, 1)[0];
+    if (selectedItem.id.includes("initial")) {
+      continue; // 初期画像は選ばない
+    } 
+    selectedItem.style = ""; // スタイルをリセット
+    selectedItems.push(selectedItem);
+  }
+
+  // 選ばれた5枚を center-slot に移動
+  selectedItems.forEach((item) => {
+    centerSlot.appendChild(item);
+  });
+});
 
 // カウンターを含む要素を動的に作成する場合
 document.querySelectorAll(".counter-container").forEach((container) => {

@@ -89,6 +89,9 @@
         <div class="center-slot-label">手札</div>
         <div class="center-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
       </div>
+      <div class="randomButton-container">
+      <button id="randomButton">ランダムドロー</button>
+      </div>
     </div>
 
   </div>
@@ -109,11 +112,13 @@
       <input type="file" id="imageUpload" accept="image/*" multiple />
       <button id="saveButton">盤面の画像を保存</button>
       <button id="tweetButton">Twitterに投稿</button>
-      <p><a href="https://www.konami.com/yugioh/neuron/" target="_blank" rel="noopener noreferrer">遊戯王ニューロン</a>から取得したデッキ画像をアップロードすることで、含まれるカードを全て登録することができます。<br />
+      <p>この Web サイトは非公式の一人回しツールです。</p>
+      <p><a href="https://www.konami.com/yugioh/neuron/" target="_blank" rel="noopener noreferrer">ニューロン</a>から取得したデッキ画像をアップロードすることで、含まれるカードを全て登録することができます。<br />
          ・注意1 メインデッキ 40枚以上、EXデッキ 11枚以上、サイドデッキなしの画像にのみ対応しています。<br />
          ・注意2 ニューロンから twitter または discord に投稿した画像を保存してアップロードしてください。<br />
          ・注意3 twitter 経由の画像は解像度が低いため、discord 経由の画像を推奨します。</p>
       <p>複数枚の画像のアップロード、またはクリップボードから貼り付けると、一枚のカード画像として登録することができます。</p>
+      <p>「盤面の画像を保存」ボタンで画像を保存すると、「ランダムドロー」ボタンは非表示扱いで保存されます。</p>
     </div>
     <div class="explain-box">
       <p>操作説明<br />
@@ -125,6 +130,9 @@
         ・カウンターの上下ボタンを押すことで、カウンターの数を増減できます。<br />
         　・カウンターの数が負になる時、カウンターは消滅します。<br />
         ・除外ゾーンが不要な場合は、ダブルクリックすることで非表示にできます。<br />
+        ・5枚ランダムドローボタンを押すことで、盤面のカードを全てデッキに戻し、手札を5枚ドローすることができます。<br />
+        　・注意 ニューロンから登録した EX カードは正しく認識されますが、それ以外の経路で登録したカードはメインデッキに戻ってしまいます。<br />
+        　・初期から登録されている裏面カードはランダムドローに選択されません。<br />
       </p>
     </div>
   <a href="https://twitter.com/FugaPoke" target="_blank" rel="noopener noreferrer" class="twitter-link">
