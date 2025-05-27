@@ -103,7 +103,6 @@ body {
     --slot-width: 15vw;
     --slot-height: calc(var(--slot-width) * 1.45);
     --gap: calc(var(--slot-width) * 0.15);
-    --min-display-width: 600px; /* 最小幅 */
     --font-size: 0.9rem;
     --title-font-size: 1.3rem;
     --mini-font-size: 0.7rem;
