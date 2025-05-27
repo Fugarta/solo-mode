@@ -206,6 +206,8 @@ body {
 }
 
 .touch-dragging {
+  position: fixed; /* ドラッグ中の要素を絶対位置に */
+  z-index: 1000; /* 前面に配置 */
   pointer-events: none;
   opacity: 0.6;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
