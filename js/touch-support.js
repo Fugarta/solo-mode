@@ -39,7 +39,6 @@ export function enableTouchDrag(ev) {
     draggingElem.classList.add('touch-dragging');
 
     // ドラッグ中の要素を画面上で移動させる
-    draggingElem.style.position = 'fixed';
     draggingElem.style.left = `${touch.clientX - draggingElem.offsetWidth / 2
       }px`;
     draggingElem.style.top = `${touch.clientY - draggingElem.offsetHeight / 2
