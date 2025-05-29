@@ -27,7 +27,7 @@ body {
   border: 1.5px solid #d1d1d1;
 }
 
-#randomButton,
+.randomButton-container button,
 .controls button,
 .controls input[type="file"] {
   background: linear-gradient(90deg, #bdbdbd 0%, #e0e0e0 100%);
@@ -43,7 +43,7 @@ body {
   vertical-align: middle;
 }
 
-#randomButton:hover,
+.randomButton-container button:hover,
 .controls button:hover,
 .controls input[type="file"]:hover {
   background: linear-gradient(90deg, #9e9e9e 0%, #cccccc 100%);
@@ -52,7 +52,7 @@ body {
   transform: translateY(-2px) scale(1.03);
 }
 
-#randomButton:active,
+.randomButton-container button:active,
 .controls button:active,
 .controls input[type="file"]:active {
   background: linear-gradient(90deg, #757575 0%, #bdbdbd 100%);
@@ -60,17 +60,19 @@ body {
   transform: translateY(1px) scale(0.98);
 }
 
-#randomButton
+.randomButton-container button
 {
   width: calc(var(--slot-width)*1.3);
-  height: 20%;
+  height: calc(var(--mini-font-size)*2.5);
   font-size: var(--mini-font-size);
   line-height: 1;
   padding: 0px 0px;
+  margin: calc(var(--gap)) 0px 0px 0px;
 }
 .randomButton-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* 縦並びに変更 */
+  justify-content: flex-end;
   align-items: flex-end;
   margin-left: var(--gap);
 }

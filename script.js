@@ -307,7 +307,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("saveButton").addEventListener("click", () => {
-  const randomButtonContainer = document.querySelector("#randomButton");
+  const randomButtonContainer = document.querySelector(".randomButton-container");
   const counterContainer = document.querySelector(".left-rectangle-container");
 
   randomButtonContainer.style.display = "none";
@@ -328,7 +328,7 @@ document.getElementById("saveButton").addEventListener("click", () => {
     link.click();
   });
   
-  randomButtonContainer.style.display = "block";
+  randomButtonContainer.style.display = "flex";
   counterContainer.style.display = "flex";
 });
 
@@ -342,7 +342,7 @@ document.getElementById("tweetButton").addEventListener("click", () => {
   });
 });
 
-document.getElementById("randomButton").addEventListener("click", () => {
+document.getElementById("resetButton").addEventListener("click", () => {
   const poolRow = document.getElementById("poolRow");
   const mainContent = document.querySelector(".main-content");
   const centerSlot = document.querySelector(".center-slot");
@@ -367,15 +367,11 @@ document.getElementById("randomButton").addEventListener("click", () => {
     }
   });
 
-  // poolRow 内の tier-item-wrapper をランダムで5枚選ぶ
-  const poolItems = Array.from(poolRow.querySelectorAll(".tier-item-wrapper"));
+  const poolItems = Array.from(poolRow.querySelectorAll(".tier-item-wrapper")).filter(item => item.id.includes("normal"));
   const selectedItems = [];
   while (selectedItems.length < 5 && poolItems.length > 0) {
     const randomIndex = Math.floor(Math.random() * poolItems.length);
     const selectedItem = poolItems.splice(randomIndex, 1)[0];
-    if (selectedItem.id.includes("initial")) {
-      continue; // 初期画像は選ばない
-    } 
     selectedItem.style = ""; // スタイルをリセット
     selectedItems.push(selectedItem);
   }
@@ -384,6 +380,20 @@ document.getElementById("randomButton").addEventListener("click", () => {
   selectedItems.forEach((item) => {
     centerSlot.appendChild(item);
   });
+});
+
+document.getElementById("randomButton").addEventListener("click", () => {
+  const poolRow = document.getElementById("poolRow");
+  const centerSlot = document.querySelector(".center-slot");
+
+  const poolItems = Array.from(poolRow.querySelectorAll(".tier-item-wrapper")).filter(item => item.id.includes("normal"));
+
+  if (poolItems.length > 0) {
+    const randomIndex = Math.floor(Math.random() * poolItems.length);
+    const selectedItem = poolItems.splice(randomIndex, 1)[0];
+    selectedItem.style = ""; // スタイルをリセット
+    centerSlot.appendChild(selectedItem);
+  }
 });
 
 // カウンターを含む要素を動的に作成する場合
