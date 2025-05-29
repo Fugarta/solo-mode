@@ -78,10 +78,11 @@ body {
 }
 /* デフォルト値 */
 :root {
-  --slot-width: 120px; /* スロットの幅 */
+  --slot-width: 120px; 
   --slot-height: calc(var(--slot-width) * 1.45);
   --gap: 12px;
-  --min-display-width: calc(var(--slot-width) * 9.8); /* 最小幅 */
+  --min-display-width: calc(var(--slot-width) * 9.8); 
+  /* --min-display-width: calc(var(--slot-width) * 11);  */
   --main-color: #000;
   --bg-color: #fff;
   --font-size: 1rem;
@@ -636,5 +637,29 @@ body {
 
 p, span, li {
   color: #333; /* Regular text in a lighter gray */
+}
+
+#free-space {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+  margin-right: calc(var(--gap)*4); 
+}
+
+#free-space .side-slot {
+  border: 2px dashed #ccc; 
+}
+
+#free-space .side-slot .tier-item-wrapper{
+  margin-top: calc(var(--slot-height)*-0.8); 
+}
+#free-space .side-slot .tier-item-wrapper:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1350px) {
+  #free-space {
+    display: none;
+  }
 }
 

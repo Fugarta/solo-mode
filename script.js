@@ -292,34 +292,44 @@ window.addEventListener("DOMContentLoaded", () => {
     item.id = "initial";
   });
 
-  // side-slot-group のうち2つめ（除外）のダブルクリックで表示/非表示を切替
   const sideSlotGroups = document.querySelectorAll('.side-slot-group');
-  if (sideSlotGroups.length >= 2) {
-    const secondGroup = sideSlotGroups[1];
-    secondGroup.addEventListener("dblclick", () => {
-      if (secondGroup.style.display === "none") {
-        secondGroup.style.display = "";
-      } else {
-        secondGroup.style.display = "none";
-      }
+  if (sideSlotGroups.length >= 3) {
+  // フリースペース
+  const firstGroup = sideSlotGroups[0];
+  firstGroup.addEventListener("dblclick", () => {
+    if (firstGroup.style.display === "none") {
+      firstGroup.style.display = "";
+    } else {
+      firstGroup.style.display = "none";
+    }
+  });
+
+  // 3つめの要素
+  const thirdGroup = sideSlotGroups[2];
+  thirdGroup.addEventListener("dblclick", () => {
+    if (thirdGroup.style.display === "none") {
+      thirdGroup.style.display = "";
+    } else {
+      thirdGroup.style.display = "none";
+    }
     });
   }
+
 });
 
 document.getElementById("saveButton").addEventListener("click", () => {
   const randomButtonContainer = document.querySelector(".randomButton-container");
   const counterContainer = document.querySelector(".left-rectangle-container");
-
+  const freeSpaceContainer = document.querySelector("#free-space");
   randomButtonContainer.style.display = "none";
   counterContainer.style.display = "none";
+  freeSpaceContainer.style.display = "none";
 
   const titleElement = document.querySelector(".title");
   const titleText = titleElement ? titleElement.textContent : "";
-  console.log("Title Text:", titleText);
 
   // Replace spaces in titleText with hyphens
   const formattedTitleText = titleText.replace(/\s/g, "-").replace(/　/g, "－");
-  console.log("Formatted Title Text:", formattedTitleText);
 
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     const link = document.createElement("a");
@@ -330,6 +340,7 @@ document.getElementById("saveButton").addEventListener("click", () => {
   
   randomButtonContainer.style.display = "flex";
   counterContainer.style.display = "flex";
+  freeSpaceContainer.style.display = "flex";
 });
 
 document.getElementById("tweetButton").addEventListener("click", () => {
