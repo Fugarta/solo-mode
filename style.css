@@ -1,6 +1,6 @@
 body {
   /* font-family: sans-serif; */
-  margin: 20px;
+  margin: var(--gap);
   background: #f2f2f2;
   overflow-x: auto;
   color: #333; /* Base text color */
@@ -13,6 +13,7 @@ body {
   text-align: center;
   font-size: var(--title-font-size);
   font-weight: bold;
+  margin-top: 0px;
   margin-bottom: 30px;
   color: #111; /* Dark gray for titles */
 }
@@ -90,6 +91,7 @@ body {
   --mini-font-size: 1.2rem;
 }
 
+
 @media (max-width: 1000px) {
   :root {
     --slot-width: 10vw;  
@@ -112,6 +114,17 @@ body {
   }
 }
 
+/* スマホの横持ち設定 */
+@media (orientation: landscape) and (max-height: 600px) {
+  :root {
+    --slot-width: 5vw;
+    --slot-height: calc(var(--slot-width) * 1.45);
+    --gap: calc(var(--slot-width) * 0.15);
+    --font-size: 0.7rem;
+    --title-font-size: 1.0rem;
+    --mini-font-size: 0.5rem;
+  }  
+}
 .tier-container {
   display: flex;
   flex-direction: column;
@@ -478,6 +491,7 @@ body {
   width: 100%;
   box-sizing: border-box;
   min-width: var(--min-display-width); /* 最小幅を600pxに設定 */
+  margin-top: 0;
   /* padding-left: 1vw;
   padding-right: 1vw; */
 }
@@ -660,6 +674,11 @@ p, span, li {
 @media (max-width: 1350px) {
   #free-space {
     display: none;
+  }
+}
+@media (orientation: landscape) {
+  #free-space {
+    display: flex;
   }
 }
 
