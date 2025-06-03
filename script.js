@@ -321,6 +321,11 @@ document.getElementById("saveButton").addEventListener("click", () => {
   const randomButtonContainer = document.querySelector(".randomButton-container");
   const counterContainer = document.querySelector(".left-rectangle-container");
   const freeSpaceContainer = document.querySelector("#free-space");
+
+  var randomButtonContainerStyle = randomButtonContainer.style.display;
+  var counterContainerStyle = counterContainer.style.display;
+  var freeSpaceContainerStyle = freeSpaceContainer.style.display;
+
   randomButtonContainer.style.display = "none";
   counterContainer.style.display = "none";
   freeSpaceContainer.style.display = "none";
@@ -338,9 +343,9 @@ document.getElementById("saveButton").addEventListener("click", () => {
     link.click();
   });
   
-  randomButtonContainer.style.display = "flex";
-  counterContainer.style.display = "flex";
-  freeSpaceContainer.style.display = "flex";
+  randomButtonContainer.style.display = randomButtonContainerStyle;
+  counterContainer.style.display = counterContainerStyle;
+  freeSpaceContainer.style.display = freeSpaceContainerStyle;
 });
 
 document.getElementById("tweetButton").addEventListener("click", () => {
