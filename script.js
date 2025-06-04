@@ -104,6 +104,7 @@ function createImageElement(src) {
     if (parent.id === "poolRow" && !initialImageSrcs.includes(img.src)) {
       wrapper.remove(); // プール内なら削除
     } else if (parent.id !== "poolRow") {
+      wrapper.style = "";
       poolRow.appendChild(wrapper); // それ以外なら戻す
     }
   });
