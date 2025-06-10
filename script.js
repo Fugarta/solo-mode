@@ -92,7 +92,7 @@ function createImageElement(src) {
   img.src = src;
   img.classList.add("tier-item");
   img.setAttribute("draggable", "true");
-  img.id = "item-" + itemCount++;
+  img.id = "item-" + String(itemCount++).padStart(3, "0");
   img.addEventListener("dragstart", drag);
   img.addEventListener("touchstart", enableTouchDrag, { passive: false });
 
@@ -335,7 +335,7 @@ document.getElementById("saveButton").addEventListener("click", () => {
   const titleText = titleElement ? titleElement.textContent : "";
 
   // Replace spaces in titleText with hyphens
-  const formattedTitleText = titleText.replace(/\s/g, "-").replace(/　/g, "－");
+  const formattedTitleText = titleText.replace(/\s/g, "_").replace(/　/g, "_");
 
   html2canvas(document.getElementById("mainContainer")).then(canvas => {
     const link = document.createElement("a");
@@ -397,6 +397,20 @@ document.getElementById("resetButton").addEventListener("click", () => {
   selectedItems.forEach((item) => {
     centerSlot.appendChild(item);
   });
+
+  const sortedItems = Array.from(poolRow.children).sort((a, b) => {
+    const idA = a.querySelector("img")?.id.toLowerCase() || "";
+    const idB = b.querySelector("img")?.id.toLowerCase() || "";
+    return idA.localeCompare(idB); // img の id を文字列として比較
+  });
+  sortedItems.forEach(item => poolRow.appendChild(item));
+
+  const sortedItems2 = Array.from(poolRow2.children).sort((a, b) => {
+    const idA = a.querySelector("img")?.id.toLowerCase() || "";
+    const idB = b.querySelector("img")?.id.toLowerCase() || "";
+    return idA.localeCompare(idB); // img の id を文字列として比較
+  });
+  sortedItems2.forEach(item => poolRow2.appendChild(item));
 });
 
 document.getElementById("randomButton").addEventListener("click", () => {
