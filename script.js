@@ -1,5 +1,6 @@
 import { enableTouchDrag } from "./js/touch-support.js";
 import { initializeCounter } from "./js/counter-manager.js";
+// import Tesseract from 'tesseract.js';
 
 window.allowDrop = allowDrop;
 window.drop = drop;
