@@ -1,5 +1,6 @@
 import { enableTouchDrag } from "./js/touch-support.js";
 import { initializeCounter } from "./js/counter-manager.js";
+// import Tesseract from 'tesseract.js';
 
 window.allowDrop = allowDrop;
 window.drop = drop;
@@ -134,8 +135,30 @@ function addImageToPool(src, toFirst = false, isEx = false) {
   }
 }
 
+// OCRを実行する関数
+async function recognizeTextFromImage(canvas) {
+  try {
+    const result = await Tesseract.recognize(
+      canvas.toDataURL(), 
+      'eng'
+    );
+    const text = result.data.text;
+    const number = parseInt(text.replace(/\D/g, ""), 10);
+
+    if (!isNaN(number)) {
+      return number;
+    } else {
+      console.error('数値の認識に失敗しました:', text);
+      return 0;
+    }
+  } catch (error) {
+    console.error('OCRエラー:', error);
+    return 0;
+  }
+}
+
 // 画像アップロード時
-document.getElementById("imageUpload").addEventListener("change", (event) => {
+document.getElementById("imageUpload").addEventListener("change", async (event) => {
   const files = event.target.files;
 
   if (files.length > 1) {
@@ -151,16 +174,16 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
 
   for (const file of files) {
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload =  function (e) {
       const img = new Image();
-      img.onload = function () {
+      img.onload = async function () {
         const w = img.width;
         const h = img.height;
         const aspect = h / w;
-
+        
         // アスペクト比に応じて決定
-        let cols, rows, startX, startY, cardWidth, cardHeight, cardGap, startYEx;
-
+        let cols, rows, startX, startY, cardWidth, cardHeight, cardGap, startYEx, deckNum;
+        let decknumX, decknumY, decknumWidth, decknumHeight;
         if (aspect >= 1.095 && aspect <= 1.105) {
           // パターン1
           cols = 10;
@@ -171,6 +194,11 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
           cardHeight = 154 / 1187 * h;
           cardGap = 2 / 1080 * w;
           startYEx = 784 / 1187 * h;
+
+          decknumX = 238 / 1080 * w;
+          decknumY = 86 / 1187 * h;
+          decknumWidth = 34 / 1080 * w;
+          decknumHeight = 23 / 1187 * h;
         } else if (aspect >= 1.235 && aspect <= 1.245) {
           // パターン2
           cols = 10;
@@ -181,6 +209,11 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
           cardHeight = 154 / 1341 * h;
           cardGap = 2 / 1080 * w;
           startYEx = 938 / 1341 * h;
+
+          decknumX = 238 / 1080 * w;
+          decknumY = 86 / 1341 * h;
+          decknumWidth = 34 / 1080 * w;
+          decknumHeight = 23 / 1341 * h;
         } else if (aspect >= 1.380 && aspect <= 1.390) {
           // パターン3
           cols = 10;
@@ -191,14 +224,48 @@ document.getElementById("imageUpload").addEventListener("change", (event) => {
           cardHeight = 154 / 1495 * h;
           cardGap = 2 / 1080 * w;
           startYEx = 1091 / 1495 * h;
+
+          decknumX = 238 / 1080 * w;
+          decknumY = 86 / 1495 * h;
+          decknumWidth = 34 / 1080 * w;
+          decknumHeight = 23 / 1495 * h;
         } else {
           // その他
           alert("画像のアスペクト比が不正です。("+ w + " x "+  h + ")");
           return;
         }
 
+        {
+          const canvas = document.createElement("canvas");
+          canvas.width = decknumWidth;
+          canvas.height = decknumHeight;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(
+            img,
+            decknumX,
+            decknumY,
+            decknumWidth,
+            decknumHeight,
+            0,
+            0,
+            decknumWidth,
+            decknumHeight
+          );
+          try {
+            deckNum = await recognizeTextFromImage(canvas); // OCRを実行し、結果を待つ
+          } catch (error) {
+            deckNum = 0; // OCRエラー時はデフォルト値を設定
+          }
+          if (!(deckNum > (cols * rows - 10) && deckNum <= cols * rows)) {
+            deckNum = 0; 
+          }
+        }
+        let cardNum = 0;
         for (let row = 0; row < rows; row++) {
           for (let col = 0; col < cols; col++) {
+            if (deckNum > 0 && cardNum++ >= deckNum) {
+              break; // デッキ数に達したら終了
+            }
             const canvas = document.createElement("canvas");
             canvas.width = cardWidth;
             canvas.height = cardHeight;
