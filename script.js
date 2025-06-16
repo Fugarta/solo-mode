@@ -146,6 +146,7 @@ async function recognizeTextFromImage(canvas) {
     const number = parseInt(text.replace(/\D/g, ""), 10);
 
     if (!isNaN(number)) {
+      console.log('認識した数値:', number, '元のテキスト:', text);
       return number;
     } else {
       console.error('数値の認識に失敗しました:', text);
@@ -181,75 +182,119 @@ document.getElementById("imageUpload").addEventListener("change", async (event) 
         const h = img.height;
         const aspect = h / w;
         
-        // アスペクト比に応じて決定
-        let cols, rows, startX, startY, cardWidth, cardHeight, cardGap, startYEx, deckNum;
-        let decknumX, decknumY, decknumWidth, decknumHeight;
-        if (aspect >= 1.095 && aspect <= 1.105) {
-          // パターン1
-          cols = 10;
-          rows = 4;
-          startX = 0;
-          startY = 119 / 1187 * h;
-          cardWidth = 106 / 1080 * w;
-          cardHeight = 154 / 1187 * h;
-          cardGap = 2 / 1080 * w;
-          startYEx = 784 / 1187 * h;
+        // アスペクト比ごとの設定をオブジェクトにまとめる
+        const aspectRatioSettings = [
+          {
+            range: [1.095, 1.105],
+            cols: 10,
+            rows: 4,
+            startX: 0,
+            startY: (h) => 119 / 1187 * h,
+            cardWidth: (w) => 106 / 1080 * w,
+            cardHeight: (h) => 154 / 1187 * h,
+            cardGap: (w) => 2 / 1080 * w,
+            startYEx: (h) => 784 / 1187 * h,
+            deckNum: {
+              x: (w) => 238 / 1080 * w,
+              y: (h) => 86 / 1187 * h,
+              width: (w) => 38 / 1080 * w,
+              height: (h) => 23 / 1187 * h,
+            },
+            exDeckNum: {
+              x: (w) => 296 / 1080 * w,
+              y: (h) => 748 / 1187 * h,
+            },
+          },
+          {
+            range: [1.235, 1.245],
+            cols: 10,
+            rows: 5,
+            startX: 0,
+            startY: (h) => 119 / 1341 * h,
+            cardWidth: (w) => 106 / 1080 * w,
+            cardHeight: (h) => 154 / 1341 * h,
+            cardGap: (w) => 2 / 1080 * w,
+            startYEx: (h) => 938 / 1341 * h,
+            deckNum: {
+              x: (w) => 238 / 1080 * w,
+              y: (h) => 86 / 1341 * h,
+              width: (w) => 38 / 1080 * w,
+              height: (h) => 23 / 1341 * h,
+            },
+            exDeckNum: {
+              x: (w) => 296 / 1080 * w,
+              y: (h) => 902 / 1341 * h,
+            },
+          },
+          {
+            range: [1.380, 1.390],
+            cols: 10,
+            rows: 6,
+            startX: 0,
+            startY: (h) => 119 / 1495 * h,
+            cardWidth: (w) => 106 / 1080 * w,
+            cardHeight: (h) => 154 / 1495 * h,
+            cardGap: (w) => 2 / 1080 * w,
+            startYEx: (h) => 1091 / 1495 * h,
+            deckNum: {
+              x: (w) => 238 / 1080 * w,
+              y: (h) => 86 / 1495 * h,
+              width: (w) => 38 / 1080 * w,
+              height: (h) => 23 / 1495 * h,
+            },
+            exDeckNum: {
+              x: (w) => 296 / 1080 * w,
+              y: (h) => 1056 / 1495 * h,
+            },
+          },
+        ];
 
-          decknumX = 238 / 1080 * w;
-          decknumY = 86 / 1187 * h;
-          decknumWidth = 34 / 1080 * w;
-          decknumHeight = 23 / 1187 * h;
-        } else if (aspect >= 1.235 && aspect <= 1.245) {
-          // パターン2
-          cols = 10;
-          rows = 5;
-          startX = 0;
-          startY = 119 / 1341 * h;;
-          cardWidth = 106 / 1080 * w;
-          cardHeight = 154 / 1341 * h;
-          cardGap = 2 / 1080 * w;
-          startYEx = 938 / 1341 * h;
+        function getAspectRatioSettings(aspect, w, h) {
+          return aspectRatioSettings.find(
+            (setting) => aspect >= setting.range[0] && aspect <= setting.range[1]
+          );
+        }
 
-          decknumX = 238 / 1080 * w;
-          decknumY = 86 / 1341 * h;
-          decknumWidth = 34 / 1080 * w;
-          decknumHeight = 23 / 1341 * h;
-        } else if (aspect >= 1.380 && aspect <= 1.390) {
-          // パターン3
-          cols = 10;
-          rows = 6;
-          startX = 0;
-          startY = 119 / 1495 * h;;
-          cardWidth = 106 / 1080 * w;
-          cardHeight = 154 / 1495 * h;
-          cardGap = 2 / 1080 * w;
-          startYEx = 1091 / 1495 * h;
-
-          decknumX = 238 / 1080 * w;
-          decknumY = 86 / 1495 * h;
-          decknumWidth = 34 / 1080 * w;
-          decknumHeight = 23 / 1495 * h;
-        } else {
-          // その他
-          alert("画像のアスペクト比が不正です。("+ w + " x "+  h + ")");
+        // アスペクト比に応じて設定を適用
+        const settings = getAspectRatioSettings(aspect, w, h);
+        if (!settings) {
+          alert(`画像のアスペクト比が不正です。(${w} x ${h})`);
           return;
         }
 
+        const cols = settings.cols;
+        const rows = settings.rows;
+        const startX = settings.startX;
+        const startY = settings.startY(h);
+        const cardWidth = settings.cardWidth(w);
+        const cardHeight = settings.cardHeight(h);
+        const cardGap = settings.cardGap(w);
+        const startYEx = settings.startYEx(h);
+
+        const deckNumX = settings.deckNum.x(w);
+        const deckNumY = settings.deckNum.y(h);
+        const deckNumWidth = settings.deckNum.width(w);
+        const deckNumHeight = settings.deckNum.height(h);
+
+        const exDeckNumX = settings.exDeckNum.x(w);
+        const exDeckNumY = settings.exDeckNum.y(h);
+
+        let deckNum;
         {
           const canvas = document.createElement("canvas");
-          canvas.width = decknumWidth;
-          canvas.height = decknumHeight;
+          canvas.width = deckNumWidth;
+          canvas.height = deckNumHeight;
           const ctx = canvas.getContext("2d");
           ctx.drawImage(
             img,
-            decknumX,
-            decknumY,
-            decknumWidth,
-            decknumHeight,
+            deckNumX,
+            deckNumY,
+            deckNumWidth,
+            deckNumHeight,
             0,
             0,
-            decknumWidth,
-            decknumHeight
+            deckNumWidth,
+            deckNumHeight
           );
           try {
             deckNum = await recognizeTextFromImage(canvas); // OCRを実行し、結果を待つ
@@ -285,35 +330,53 @@ document.getElementById("imageUpload").addEventListener("change", async (event) 
             addImageToPool(dataUrl, false); // 先頭に追加
           }
         }
-        for (let i = 0; i < 10; i++) {
+
+        let exDeckNum;
+        {
           const canvas = document.createElement("canvas");
-          canvas.width = cardWidth;
-          canvas.height = cardHeight;
+          canvas.width = deckNumWidth;
+          canvas.height = deckNumHeight;
           const ctx = canvas.getContext("2d");
           ctx.drawImage(
             img,
-            0 + i * (cardWidth + cardGap), startYEx, // sx, sy
-            cardWidth, cardHeight,  // sw, sh
-            0, 0,                   // dx, dy
-            cardWidth, cardHeight   // dw, dh
+            exDeckNumX,
+            exDeckNumY,
+            deckNumWidth,
+            deckNumHeight,
+            0,
+            0,
+            deckNumWidth,
+            deckNumHeight
           );
-          const dataUrl = canvas.toDataURL();
-          addImageToPool(dataUrl, false, true);
+          try {
+            exDeckNum = await recognizeTextFromImage(canvas); // OCRを実行し、結果を待つ
+          } catch (error) {
+            exDeckNum = 15; // OCRエラー時はデフォルト値を設定
+          }
+          if (!(exDeckNum > 0 && exDeckNum <= 20)) {
+            exDeckNum = 15; 
+          }
         }
-        for (let i = 0; i < 5; i++) {
-          const canvas = document.createElement("canvas");
-          canvas.width = cardWidth;
-          canvas.height = cardHeight;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(
-            img,
-            0 + i * (cardWidth + cardGap), startYEx + cardHeight, // sx, sy
-            cardWidth, cardHeight,  // sw, sh
-            0, 0,                   // dx, dy
-            cardWidth, cardHeight   // dw, dh
-          );
-          const dataUrl = canvas.toDataURL();
-          addImageToPool(dataUrl, false, true);
+        let exCardNum = 0;
+        for (let row = 0; row < 2; row++) {
+          for (let col = 0; col < 10; col++) {
+            if (exDeckNum > 0 && exCardNum++ >= exDeckNum) {
+              break; // デッキ数に達したら終了
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = cardWidth;
+            canvas.height = cardHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(
+              img,
+              0 + col * (cardWidth + cardGap), startYEx + cardHeight * row, // sx, sy
+              cardWidth, cardHeight,  // sw, sh
+              0, 0,                   // dx, dy
+              cardWidth, cardHeight   // dw, dh
+            );
+            const dataUrl = canvas.toDataURL();
+            addImageToPool(dataUrl, false, true);
+          }
         }
       };
       img.src = e.target.result;
