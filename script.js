@@ -175,7 +175,7 @@ document.getElementById("imageUpload").addEventListener("change", async (event) 
 
   for (const file of files) {
     const reader = new FileReader();
-    reader.onload =  function (e) {
+    reader.onload = function (e) {
       const img = new Image();
       img.onload = async function () {
         const w = img.width;
@@ -197,7 +197,7 @@ document.getElementById("imageUpload").addEventListener("change", async (event) 
             deckNum: {
               x: (w) => 238 / 1080 * w,
               y: (h) => 86 / 1187 * h,
-              width: (w) => 38 / 1080 * w,
+              width: (w) => 36 / 1080 * w,
               height: (h) => 23 / 1187 * h,
             },
             exDeckNum: {
@@ -218,7 +218,7 @@ document.getElementById("imageUpload").addEventListener("change", async (event) 
             deckNum: {
               x: (w) => 238 / 1080 * w,
               y: (h) => 86 / 1341 * h,
-              width: (w) => 38 / 1080 * w,
+              width: (w) => 36 / 1080 * w,
               height: (h) => 23 / 1341 * h,
             },
             exDeckNum: {
@@ -239,7 +239,7 @@ document.getElementById("imageUpload").addEventListener("change", async (event) 
             deckNum: {
               x: (w) => 238 / 1080 * w,
               y: (h) => 86 / 1495 * h,
-              width: (w) => 38 / 1080 * w,
+              width: (w) => 36 / 1080 * w,
               height: (h) => 23 / 1495 * h,
             },
             exDeckNum: {
@@ -299,10 +299,10 @@ document.getElementById("imageUpload").addEventListener("change", async (event) 
           try {
             deckNum = await recognizeTextFromImage(canvas); // OCRを実行し、結果を待つ
           } catch (error) {
-            deckNum = 0; // OCRエラー時はデフォルト値を設定
+            deckNum = cols * rows;
           }
           if (!(deckNum > (cols * rows - 10) && deckNum <= cols * rows)) {
-            deckNum = 0; 
+            deckNum = cols * rows;
           }
         }
         let cardNum = 0;
