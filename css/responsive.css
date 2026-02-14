@@ -1,0 +1,68 @@
+/* レスポンシブデザイン */
+
+@media (min-width: 1000px) {
+  #poolRow {
+    min-height: calc(var(--slot-height) * 1.1);
+  }
+  #poolRow2 {
+    min-height: calc(var(--slot-height) * 1.1);
+  }
+}
+
+@media (max-width: 1350px) {
+  #free-space {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  :root {
+    --slot-width: 10vw;
+    --slot-height: calc(var(--slot-width) * 1.45);
+    --gap: calc(var(--slot-width) * 0.1);
+    --font-size: 0.95rem;
+    --title-font-size: 2rem;
+    --mini-font-size: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .controls-explain-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap);
+  }
+  .controls,
+  .explain-box {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --slot-width: 15vw;
+    --slot-height: calc(var(--slot-width) * 1.45);
+    --gap: calc(var(--slot-width) * 0.15);
+    --font-size: 0.9rem;
+    --title-font-size: 1.3rem;
+    --mini-font-size: 0.7rem;
+  }
+}
+
+/* スマホの横持ち設定 */
+@media (orientation: landscape) and (max-height: 600px) {
+  :root {
+    --slot-width: 5vw;
+    --slot-height: calc(var(--slot-width) * 1.45);
+    --gap: calc(var(--slot-width) * 0.15);
+    --font-size: 0.7rem;
+    --title-font-size: 1.0rem;
+    --mini-font-size: 0.5rem;
+  }
+}
+
+@media (orientation: landscape) {
+  #free-space {
+    display: flex;
+  }
+}

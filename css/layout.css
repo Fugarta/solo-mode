@@ -1,0 +1,145 @@
+/* レイアウト関連のスタイル */
+
+body {
+  margin: var(--gap);
+  background: #f2f2f2;
+  overflow-x: auto;
+  color: #333;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.title {
+  text-align: center;
+  font-size: var(--title-font-size);
+  font-weight: bold;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  color: #111;
+}
+
+#mainContainer {
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: var(--min-display-width);
+  margin-top: 0;
+}
+
+/* main-content: custom-layout と side-slot を横並びに */
+.main-content {
+  margin: 0 auto;
+  display: flex;
+  gap: var(--gap);
+  align-items: stretch;
+  justify-content: center;
+}
+
+.custom-layout {
+  width: var(--slot-width) * 6.1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+}
+
+/* 最上段: 2個（中央の3番目と5番目の上） */
+.row-top {
+  display: grid;
+  grid-template-columns: repeat(6, var(--slot-width));
+  gap: var(--gap);
+  margin-bottom: 0;
+  justify-items: start;
+}
+
+.row-top .custom-slot:nth-child(1) {
+  grid-column: 3;
+}
+
+.row-top .custom-slot:nth-child(2) {
+  grid-column: 5;
+}
+
+/* 中央段: 6個 */
+.row-middle {
+  display: grid;
+  grid-template-columns: repeat(6, var(--slot-width));
+  justify-content: start;
+  gap: var(--gap);
+  margin-bottom: 0;
+}
+
+/* 最下段: 6個 */
+.row-bottom {
+  display: grid;
+  grid-template-columns: repeat(6, var(--slot-width));
+  gap: var(--gap);
+  margin-bottom: 0;
+  justify-items: start;
+}
+
+/* 横長長方形 */
+.center-row {
+  display: flex;
+  justify-content: center;
+  margin: var(--gap) 0 var(--gap) 0;
+  position: relative;
+}
+
+.center-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.side-slots-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+}
+
+.side-slot-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* controls と explain-box を横並び・レスポンシブ対応 */
+.controls-explain-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--gap);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.controls,
+.explain-box {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: var(--min-display-width);
+}
+
+.randomButton-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-left: var(--gap);
+}
+
+.left-rectangle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#free-space {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+  margin-right: calc(var(--gap)*4);
+}

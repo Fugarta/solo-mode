@@ -1,0 +1,14 @@
+/* CSS変数定義 */
+
+/* デフォルト値 */
+:root {
+  --slot-width: 120px;
+  --slot-height: calc(var(--slot-width) * 1.45);
+  --gap: 12px;
+  --min-display-width: calc(var(--slot-width) * 9.8);
+  --main-color: #000;
+  --bg-color: #fff;
+  --font-size: 1rem;
+  --title-font-size: 2.5rem;
+  --mini-font-size: 1.2rem;
+}
