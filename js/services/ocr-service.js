@@ -24,11 +24,11 @@ export async function recognizeNumberFromCanvas(canvas) {
       return number;
     } else {
       console.warn('数値の認識に失敗:', text);
-      return 0;
+      return -1;
     }
   } catch (error) {
     console.error('OCRエラー:', error);
-    return 0;
+    return -1;
   }
 }
 

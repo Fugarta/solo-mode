@@ -26,18 +26,21 @@ export const OCR_ASPECT_RATIO_CONFIGS = [
     aspectRange: [1.095, 1.105],
     rows: 4,
     base: BASE_SIZES.ROWS_4,
+    exStartY: 784, // ROWS_4のEXデッキ開始Y座標（相対座標で定義）
   },
   {
     name: 'ROWS_5',
     aspectRange: [1.235, 1.245],
     rows: 5,
     base: BASE_SIZES.ROWS_5,
+    exStartY: 938, // ROWS_5のEXデッキ開始Y座標（相対座標で定義）
   },
   {
     name: 'ROWS_6',
     aspectRange: [1.380, 1.390],
     rows: 6,
     base: BASE_SIZES.ROWS_6,
+    exStartY: 1091, // ROWS_6のEXデッキ開始Y座標（相対座標で定義）
   },
 ];
 
@@ -60,15 +63,10 @@ export const RELATIVE_POSITIONS = {
     height: 23,
   },
   exDeck: {
-    startY: (baseHeight, cardHeight, rows) => {
-      // EXデッキの開始Y座標の計算式
-      const baseY = 784;
-      return baseY + cardHeight * (rows - 4); // 119 + (cardHeight * 6) + 50
-    },
-    numLabelOffset: {
-      x: 296,
-      yOffset: -36, // EXデッキ開始位置からの相対オフセット
-    },
+    x: 296,
+    y(config) {
+      return config.exStartY - 36; // EXデッキ枚数ラベルのY座標（相対座標で定義）
+    }
   },
 };
 
@@ -112,7 +110,7 @@ export function calculateAbsolutePositions(config, width, height) {
   const scaleH = height / config.base.height;
 
   const cardHeight = RELATIVE_POSITIONS.card.height * scaleH;
-  const exStartY = RELATIVE_POSITIONS.exDeck.startY(height, cardHeight, config.rows);
+  const exStartY = config.exStartY * scaleH;
 
   return {
     cols: COMMON_CONFIG.cols,
@@ -136,8 +134,8 @@ export function calculateAbsolutePositions(config, width, height) {
       rows: COMMON_CONFIG.exRows,
       cols: COMMON_CONFIG.exCols,
       numLabel: {
-        x: RELATIVE_POSITIONS.exDeck.numLabelOffset.x * scaleW,
-        y: exStartY + (RELATIVE_POSITIONS.exDeck.numLabelOffset.yOffset * scaleH),
+        x: RELATIVE_POSITIONS.exDeck.x * scaleW,
+        y: RELATIVE_POSITIONS.exDeck.y(config) * scaleH,
         width: RELATIVE_POSITIONS.deckNum.width * scaleW,
         height: RELATIVE_POSITIONS.deckNum.height * scaleH,
       },
