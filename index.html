@@ -117,6 +117,7 @@
   <div class="controls-explain-container">
     <div class="controls">
       <input type="file" id="imageUpload" accept="image/*" multiple />
+      <button id="folderSelectButton">フォルダから画像を選択</button>
       <button id="saveButton">盤面の画像を保存</button>
       <button id="tweetButton">Twitterに投稿</button>
       <p>この Web サイトは非公式の一人回しツールです。</p>
@@ -152,6 +153,11 @@
     <span>Contact via Twitter @FugaPoke</span>
   </a>
 
+  </div>
+
+  <!-- 画像ブラウザモーダル -->
+  <div id="imageBrowserModal" class="modal-overlay" style="display: none;">
+    <!-- モーダルコンテンツはJSで動的生成 -->
   </div>
 
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>

@@ -5,6 +5,8 @@ import {
   drawRandomCards,
 } from '../components/card-manager.js';
 import { extractCardsFromNeuronImage, extractImagesFromClipboard } from '../services/image-service.js';
+import { selectFolderAndFilterImages } from './folder-selector.js';
+import { ImageBrowserModal } from './image-browser-modal.js';
 
 /**
  * UIイベントハンドラ
@@ -93,6 +95,24 @@ export function handleTweetBoard() {
 }
 
 /**
+ * フォルダ選択ボタンのイベントハンドラ
+ */
+export async function handleFolderSelect() {
+  try {
+    const filteredImages = await selectFolderAndFilterImages();
+    if (filteredImages.length === 0) {
+      alert('適切なアスペクト比の画像が見つかりませんでした。');
+      return;
+    }
+    const modal = new ImageBrowserModal(filteredImages);
+    modal.show();
+  } catch (error) {
+    alert('フォルダ選択エラー: ' + error.message);
+    console.error(error);
+  }
+}
+
+/**
  * リセット&5ドローボタンのイベントハンドラ
  */
 export function handleResetAndDraw() {
@@ -152,6 +172,10 @@ export function initializeEventListeners() {
   // 1ドロー
   document.getElementById('randomButton')
     .addEventListener('click', handleDrawOne);
+
+  // フォルダ選択
+  document.getElementById('folderSelectButton')
+    .addEventListener('click', handleFolderSelect);
 
   // フリースペースと除外ゾーンのダブルクリック切り替え
   const sideSlotGroups = document.querySelectorAll('.side-slot-group');
