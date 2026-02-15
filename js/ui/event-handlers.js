@@ -7,6 +7,7 @@ import {
 import { extractCardsFromNeuronImage, extractImagesFromClipboard } from '../services/image-service.js';
 import { selectFolderAndFilterImages } from './folder-selector.js';
 import { ImageBrowserModal } from './image-browser-modal.js';
+import { SaveLoadModal } from './save-load-modal.js';
 
 /**
  * UIイベントハンドラ
@@ -113,6 +114,22 @@ export async function handleFolderSelect() {
 }
 
 /**
+ * セーブボタンのイベントハンドラ
+ */
+export function handleSaveGame() {
+  const modal = new SaveLoadModal('save');
+  modal.show();
+}
+
+/**
+ * ロードボタンのイベントハンドラ
+ */
+export function handleLoadGame() {
+  const modal = new SaveLoadModal('load');
+  modal.show();
+}
+
+/**
  * リセット&5ドローボタンのイベントハンドラ
  */
 export function handleResetAndDraw() {
@@ -176,6 +193,12 @@ export function initializeEventListeners() {
   // フォルダ選択
   document.getElementById('folderSelectButton')
     .addEventListener('click', handleFolderSelect);
+
+  // セーブ/ロード
+  document.getElementById('saveButton2')
+    .addEventListener('click', handleSaveGame);
+  document.getElementById('loadButton')
+    .addEventListener('click', handleLoadGame);
 
   // フリースペースと除外ゾーンのダブルクリック切り替え
   const sideSlotGroups = document.querySelectorAll('.side-slot-group');

@@ -37,8 +37,6 @@ card-sim/
 │   └── ui/                # UI層
 │       └── event-handlers.js   # イベントハンドラ
 ├── images/                 # 画像アセット
-├── backup/                 # 旧ファイルのバックアップ
-├── REFACTORING_GUIDE.md   # リファクタリングガイド
 └── README.md              # このファイル
 ```
 

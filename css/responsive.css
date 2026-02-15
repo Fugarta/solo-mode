@@ -24,6 +24,13 @@
     --title-font-size: 2rem;
     --mini-font-size: 1rem;
   }
+
+  .action-btn {
+    width: 140px;
+    font-size: 0.9rem;
+    min-height: 45px;
+    padding: 8px 12px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -47,6 +54,21 @@
     --title-font-size: 1.3rem;
     --mini-font-size: 0.7rem;
   }
+
+  .action-button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .action-btn {
+    width: 100%;
+    font-size: 0.75rem;
+    min-height: 45px;
+    padding: 8px 6px;
+  }
 }
 
 /* スマホの横持ち設定 */
@@ -58,6 +80,21 @@
     --font-size: 0.7rem;
     --title-font-size: 1.0rem;
     --mini-font-size: 0.5rem;
+  }
+
+  .action-button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    max-width: 240px;
+  }
+
+  .action-btn {
+    width: 100%;
+    font-size: 0.6rem;
+    min-height: 35px;
+    padding: 5px 6px;
+    border-radius: 6px;
   }
 }
 
