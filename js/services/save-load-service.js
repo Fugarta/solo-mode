@@ -4,7 +4,7 @@
  */
 
 const SAVE_KEY_PREFIX = 'card-sim-save-slot-';
-const MAX_SLOTS = 3;
+const MAX_SLOTS = 5;
 
 /**
  * スロット内のカード情報を取得
@@ -59,7 +59,7 @@ function getCounterStates() {
 
 /**
  * 現在のゲーム状態を保存
- * @param {number} slotNumber - 保存スロット番号（1-3）
+ * @param {number} slotNumber - 保存スロット番号（1-5）
  * @param {string} slotName - スロット名（オプション）
  * @returns {boolean} - 保存成功/失敗
  */
@@ -224,7 +224,7 @@ function restoreCounters(counters) {
 
 /**
  * ゲーム状態をロード
- * @param {number} slotNumber - ロードスロット番号（1-3）
+ * @param {number} slotNumber - ロードスロット番号（1-5）
  * @returns {boolean} - ロード成功/失敗
  */
 export function loadGameState(slotNumber) {
@@ -329,7 +329,7 @@ export function getSaveSlots() {
 
 /**
  * スロット名を更新
- * @param {number} slotNumber - スロット番号（1-3）
+ * @param {number} slotNumber - スロット番号（1-5）
  * @param {string} newName - 新しいスロット名
  */
 export function updateSlotName(slotNumber, newName) {
@@ -358,7 +358,7 @@ export function updateSlotName(slotNumber, newName) {
 
 /**
  * セーブスロットをクリア
- * @param {number} slotNumber - クリアするスロット番号（1-3）
+ * @param {number} slotNumber - クリアするスロット番号（1-5）
  */
 export function clearSaveSlot(slotNumber) {
   if (slotNumber < 1 || slotNumber > MAX_SLOTS) {

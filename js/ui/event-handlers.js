@@ -64,8 +64,9 @@ export function handleSaveBoard() {
   ];
 
   // 一時的に非表示
-  const originalStyles = elementsToHide.map(el => el.style.display);
-  elementsToHide.forEach(el => el.style.display = 'none');
+  const validElements = elementsToHide.filter(el => el !== null);
+  const originalStyles = validElements.map(el => el.style.display);
+  validElements.forEach(el => el.style.display = 'none');
 
   // タイトルを取得
   const titleElement = document.querySelector('.title');
@@ -80,7 +81,7 @@ export function handleSaveBoard() {
     link.click();
 
     // 表示を復元
-    elementsToHide.forEach((el, i) => el.style.display = originalStyles[i]);
+    validElements.forEach((el, i) => el.style.display = originalStyles[i]);
   });
 }
 
