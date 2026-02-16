@@ -107,11 +107,13 @@ export function saveGameState(slotNumber, slotName = '') {
       gameState.slots['free-space'] = getCardsFromSlot(freeSpace);
     }
 
-    // localStorageに保存
+    // localStorageに保存（圧縮して容量を削減）
     const key = SAVE_KEY_PREFIX + slotNumber;
-    localStorage.setItem(key, JSON.stringify(gameState));
+    const jsonString = JSON.stringify(gameState);
+    const compressed = LZString.compress(jsonString);
+    localStorage.setItem(key, compressed);
 
-    console.log(`ゲーム状態をスロット${slotNumber}に保存しました`);
+    console.log(`ゲーム状態をスロット${slotNumber}に保存しました（圧縮前: ${(jsonString.length / 1024).toFixed(2)}KB, 圧縮後: ${(compressed.length / 1024).toFixed(2)}KB）`);
     return true;
   } catch (error) {
     console.error('保存エラー:', error);
@@ -240,7 +242,11 @@ export function loadGameState(slotNumber) {
       throw new Error('セーブデータが見つかりません');
     }
 
-    const gameState = JSON.parse(data);
+    // 圧縮データを解凍
+    const decompressed = LZString.decompress(data);
+
+    // 旧形式（圧縮されていない）との互換性を保つ
+    const gameState = JSON.parse(decompressed || data);
 
     // デッキプール
     restoreCardsToSlot(document.getElementById('poolRow'), gameState.slots.poolRow);
@@ -299,7 +305,9 @@ export function getSaveSlots() {
 
     if (data) {
       try {
-        const gameState = JSON.parse(data);
+        // 圧縮データを解凍（旧形式との互換性も保つ）
+        const decompressed = LZString.decompress(data);
+        const gameState = JSON.parse(decompressed || data);
         const date = new Date(gameState.timestamp);
         slots.push({
           number: i,
@@ -345,9 +353,14 @@ export function updateSlotName(slotNumber, newName) {
   }
 
   try {
-    const gameState = JSON.parse(data);
+    // 圧縮データを解凍（旧形式との互換性も保つ）
+    const decompressed = LZString.decompress(data);
+    const gameState = JSON.parse(decompressed || data);
     gameState.slotName = newName || `スロット ${slotNumber}`;
-    localStorage.setItem(key, JSON.stringify(gameState));
+
+    // 圧縮して保存
+    const compressed = LZString.compress(JSON.stringify(gameState));
+    localStorage.setItem(key, compressed);
     console.log(`スロット${slotNumber}の名前を「${gameState.slotName}」に変更しました`);
     return true;
   } catch (error) {
