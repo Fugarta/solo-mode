@@ -7,6 +7,7 @@ import { initializeDesktopDragDrop, enableTouchDrag } from './components/drag-dr
 import { initializeCards } from './components/card-manager.js';
 import { initializeCounter } from './components/counter-manager.js';
 import { initializeEventListeners } from './ui/event-handlers.js';
+import { initializeOCRWorker } from './services/ocr-service.js';
 
 /**
  * アプリケーション初期化
@@ -36,6 +37,11 @@ function initializeApp() {
 
   // イベントリスナーを設定
   initializeEventListeners();
+
+  // OCR Workerを事前初期化（非同期でバックグラウンド実行）
+  initializeOCRWorker().catch(error => {
+    console.warn('OCR Workerのプリロードに失敗しましたが、処理は続行します:', error);
+  });
 
   console.log('Solo Mode initialized successfully');
 }

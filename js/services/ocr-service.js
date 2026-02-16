@@ -5,6 +5,37 @@ import { OCR_VALIDATION } from '../config/ocr-config.js';
  * Tesseract.jsを使った文字認識処理
  */
 
+// Tesseract Workerのインスタンス（プリロード用）
+let ocrWorker = null;
+let workerInitPromise = null;
+
+/**
+ * Tesseract Workerを事前初期化（プリロード）
+ * ページロード時に呼び出すことで、初回OCR実行時の遅延を軽減
+ * @returns {Promise<void>}
+ */
+export async function initializeOCRWorker() {
+  if (workerInitPromise) {
+    // 既に初期化中または完了している場合は同じPromiseを返す
+    return workerInitPromise;
+  }
+
+  workerInitPromise = (async () => {
+    try {
+      console.log('OCR Workerの初期化を開始...');
+      ocrWorker = await Tesseract.createWorker('eng');
+      console.log('OCR Workerの初期化が完了しました');
+    } catch (error) {
+      console.error('OCR Workerの初期化に失敗:', error);
+      ocrWorker = null;
+      workerInitPromise = null;
+      throw error;
+    }
+  })();
+
+  return workerInitPromise;
+}
+
 /**
  * キャンバスから数値をOCRで認識
  * @param {HTMLCanvasElement} canvas - OCR対象のキャンバス
@@ -12,10 +43,19 @@ import { OCR_VALIDATION } from '../config/ocr-config.js';
  */
 export async function recognizeNumberFromCanvas(canvas) {
   try {
-    const result = await Tesseract.recognize(
-      canvas.toDataURL(),
-      'eng'
-    );
+    let result;
+
+    // プリロードされたWorkerがあれば使用、なければ従来の方法
+    if (ocrWorker) {
+      result = await ocrWorker.recognize(canvas.toDataURL());
+    } else {
+      // Workerが未初期化の場合は従来の方法（互換性のため）
+      result = await Tesseract.recognize(
+        canvas.toDataURL(),
+        'eng'
+      );
+    }
+
     const text = result.data.text;
     const number = parseInt(text.replace(/\D/g, ''), 10);
 
