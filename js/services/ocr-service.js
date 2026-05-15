@@ -37,6 +37,44 @@ export async function initializeOCRWorker() {
 }
 
 /**
+ * OCR結果の後処理：一般的な誤認識パターンを修正
+ * @param {string} text - OCR結果のテキスト
+ * @returns {string} - 修正されたテキスト
+ */
+function correctOCRMisrecognition(text) {
+  let corrected = text;
+
+  // 一般的な誤認識パターンを修正
+  const corrections = {
+    'O': '0',   // O（文字）→ 0（数字）
+    'o': '0',   // o（小文字）→ 0（数字）
+    'I': '1',   // I（大文字）→ 1
+    'l': '1',   // l（小文字）→ 1
+    'Z': '2',   // Z → 2
+    'z': '2',
+    'B': '8',   // B → 8
+    'b': '8',
+    'S': '5',   // S → 5
+    's': '5',
+    'G': '6',   // G → 6
+    'g': '6',
+    '(': '0',   // ( → 0
+    ')': '0',   // ) → 0
+    '[': '1',   // [ → 1
+    ']': '1',   // ] → 1
+    '|': '1',   // | → 1
+    'E': '5',   // E → 5
+    'e': '5',   // e → 5 
+  };
+
+  for (const [wrong, correct] of Object.entries(corrections)) {
+    corrected = corrected.split(wrong).join(correct);
+  }
+
+  return corrected;
+}
+
+/**
  * キャンバスから数値をOCRで認識
  * @param {HTMLCanvasElement} canvas - OCR対象のキャンバス
  * @returns {Promise<number>} - 認識された数値（失敗時は0）
@@ -56,14 +94,19 @@ export async function recognizeNumberFromCanvas(canvas) {
       );
     }
 
-    const text = result.data.text;
+    let text = result.data.text;
+    
+    // 後処理：誤認識パターンを修正
+    text = correctOCRMisrecognition(text);
+    
+    // 数値のみを抽出
     const number = parseInt(text.replace(/\D/g, ''), 10);
 
     if (!isNaN(number)) {
-      console.log('OCR認識成功:', number, '元のテキスト:', text);
+      console.log('OCR認識成功:', number, '元のテキスト:', result.data.text, '修正後:', text);
       return number;
     } else {
-      console.warn('数値の認識に失敗:', text);
+      console.warn('数値の認識に失敗:', result.data.text);
       return -1;
     }
   } catch (error) {
